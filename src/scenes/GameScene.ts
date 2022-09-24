@@ -124,6 +124,18 @@ export class GameScene extends Scene {
         this.cameras.main.setFollowOffset(x * 0.95, y * 0.95);
       }
     }
+
+    // Apply fake player-ground friction
+    const {x: vx} = this.kirk.body.velocity;
+
+    if (this.kirk.body.blocked.down) {
+      if ((vx < 0 && vx > -5 || vx > 0 && vx < 5)) {
+        this.kirk.body.setVelocityX(0);
+      }
+      else {
+        this.kirk.body.setVelocityX(vx * 0.96);
+      }
+    }
   }
 
 
