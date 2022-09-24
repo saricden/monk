@@ -58,7 +58,7 @@ export class GameScene extends Scene {
       const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
 
       if (didPull) {
-        this.kirk.body.setVelocity(dx, dy * 3);
+        this.kirk.body.setVelocity(dx * 1.5, dy * 2.5);
       }
       else {
         this.kirk.body.setVelocityX(0);
