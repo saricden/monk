@@ -47,7 +47,7 @@ export class GameScene extends Scene {
         const dx = (startX - x);
         const dy = (startY - y);
 
-        this.cameras.main.setFollowOffset(dx * 0.15, dy * 0.15);
+        this.cameras.main.setFollowOffset(dx * 0.1, dy * 0.1);
       }
     });
 
@@ -58,7 +58,7 @@ export class GameScene extends Scene {
       const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
 
       if (didPull) {
-        this.kirk.body.setVelocity(dx, dy);
+        this.kirk.body.setVelocity(dx, dy * 3);
       }
       else {
         this.kirk.body.setVelocityX(0);
