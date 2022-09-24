@@ -20,6 +20,17 @@ export class BootScene extends Scene {
 
     // Music
     this.load.audio('ost1', 'assets/music/ost1.mp3');
+
+    // SFX
+    this.load.audio('sfx-jump1', 'assets/sfx/jump1.wav');
+    this.load.audio('sfx-jump2', 'assets/sfx/jump2.wav');
+    this.load.audio('sfx-jump3', 'assets/sfx/jump3.wav');
+    this.load.audio('sfx-hurt1', 'assets/sfx/hurt1.wav');
+    this.load.audio('sfx-hurt2', 'assets/sfx/hurt2.wav');
+    this.load.audio('sfx-hurt3', 'assets/sfx/hurt3.wav');
+    this.load.audio('sfx-enemy1', 'assets/sfx/enemy1.wav');
+    this.load.audio('sfx-enemy2', 'assets/sfx/enemy2.wav');
+    this.load.audio('sfx-enemy3', 'assets/sfx/enemy3.wav');
   }
 
   create() {
@@ -44,6 +55,9 @@ export class BootScene extends Scene {
       color: '#FFF',
       fontSize: '18px'
     }).setOrigin(0.5, 0.5);
+
+    // @ts-ignore
+    // this.sound.setVolume(0);
 
     this.input.once('pointerup', () => {
       this.scene.start('scene-game');

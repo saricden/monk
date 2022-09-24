@@ -4,6 +4,7 @@ import { Game, WEBGL } from 'phaser';
 // Scenes
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
+import { HUD } from './scenes/HUD';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 
@@ -22,7 +23,9 @@ const config = {
   pixelArt: true,
   scene: [
     BootScene,
-    GameScene
+    GameScene,
+
+    HUD
   ]
 }
 
