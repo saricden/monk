@@ -31,7 +31,6 @@ export class GameScene extends Scene {
     let startX: number = 0;
     let startY: number = 0;
     let isDown: boolean = false;
-    let timer = Date.now();
 
     this.input.on('pointerdown', ({ x, y }: { x: number, y: number }) => {
       if (this.kirk === undefined) {
@@ -41,7 +40,6 @@ export class GameScene extends Scene {
       startX = x;
       startY = y;
       isDown = true;
-      timer = Date.now();
     });
 
     this.input.on('pointermove', ({ x, y }: { x: number, y: number }) => {
