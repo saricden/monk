@@ -27,6 +27,10 @@ export class GameScene extends Scene {
     this.cameras.main.startFollow(this.kirk);
     this.cameras.main.setBackgroundColor(0x110011);
 
+    const ost = this.sound.add('ost1', {
+      loop: true
+    });
+
     const pullThreshold = 100;
     let startX: number = 0;
     let startY: number = 0;
@@ -52,13 +56,16 @@ export class GameScene extends Scene {
     });
 
     this.input.on('pointerup', ({ x, y }: { x: number, y: number }) => {
-      
       const dx = (startX - x);
       const dy = (startY - y);
       const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
 
       if (didPull) {
         this.kirk.body.setVelocity(dx * 1.5, dy * 2.5);
+
+        if (!ost.isPlaying) {
+          ost.play();
+        }
       }
       else {
         this.kirk.body.setVelocityX(0);

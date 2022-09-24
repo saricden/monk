@@ -18,6 +18,8 @@ export class BootScene extends Scene {
     this.load.image('tiles', 'assets/maps/tiles-ex.png');
     this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
 
+    // Music
+    this.load.audio('ost1', 'assets/music/ost1.mp3');
   }
 
   create() {
