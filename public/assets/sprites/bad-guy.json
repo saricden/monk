@@ -1,0 +1,43 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 2, "y": 24, "w": 19, "h": 20 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 15, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 2, "y": 2, "w": 20, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 24, "y": 2, "w": 20, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.39-arm64",
+  "image": "bad-guy.png",
+  "format": "RGBA8888",
+  "size": { "w": 44, "h": 44 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "bad-guy-anim", "from": 0, "to": 2, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
