@@ -40,16 +40,16 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('heart');
     this.anims.createFromAseprite('monk');
 
-    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'K I R K', {
+    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
       fontFamily: 'serif',
       color: '#FFF',
       fontSize: '72px'
     }).setOrigin(0.5, 0.5);
 
-    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 50, 'A game by Kirk', {
+    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 50, 'A game by Kirk M. (@saricden)', {
       fontFamily: 'sans-serif',
       color: '#FFF',
-      fontSize: '22px'
+      fontSize: '18px'
     }).setOrigin(0.5, 0.5);
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 + 50, 'Tap to begin.', {
