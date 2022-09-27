@@ -10,6 +10,7 @@ export class BootScene extends Scene {
     this.load.aseprite('kirk', 'assets/sprites/kirk.png', 'assets/sprites/kirk.json');
     this.load.aseprite('bad-guy', 'assets/sprites/bad-guy.png', 'assets/sprites/bad-guy.json');
     this.load.aseprite('heart', 'assets/sprites/heart.png', 'assets/sprites/heart.json');
+    this.load.aseprite('monk', 'assets/sprites/monk.png', 'assets/sprites/monk.json');
 
     // UI
     this.load.aseprite('ui-heart', 'assets/ui/ui-heart.png', 'assets/ui/ui-heart.json');
@@ -19,7 +20,7 @@ export class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
 
     // Music
-    this.load.audio('ost1', 'assets/music/ost1.mp3');
+    this.load.audio('ost1', 'assets/music/monk-loop1.mp3');
 
     // SFX
     this.load.audio('sfx-jump1', 'assets/sfx/jump1.wav');
@@ -37,6 +38,7 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('kirk');
     this.anims.createFromAseprite('bad-guy');
     this.anims.createFromAseprite('heart');
+    this.anims.createFromAseprite('monk');
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'K I R K', {
       fontFamily: 'serif',

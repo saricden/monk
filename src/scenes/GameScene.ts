@@ -3,13 +3,15 @@ import { Scene, Tilemaps, Math as pMath } from 'phaser';
 export class GameScene extends Scene {
   private map?: Tilemaps.Tilemap;
   private ground?: any;
-  private kirk?: any;
+  private monk?: any;
   private gameStarted: boolean = false;
   private queuedEnemyCount: number = 0;
-  private maxQueuedEnemies: number = 10;
+  private maxQueuedEnemies: number = 3;
   private baddies: any;
-  // private hp: number = 4;
-  // private maxHP: number = 4;
+  // @ts-ignore
+  private hp: number = 4;
+  // @ts-ignore
+  private maxHP: number = 4;
   private score: number = 0;
 
   constructor() {
@@ -23,23 +25,23 @@ export class GameScene extends Scene {
 
     this.ground.setCollisionByProperty({ collides: true });
 
-    this.kirk = this.physics.add.sprite(200, 0, 'kirk');
-    this.kirk.play({
-      key: 'kirk-down',
+    this.monk = this.physics.add.sprite(200, 0, 'monk');
+    this.monk.play({
+      key: 'Monk-Down',
       repeat: -1
     });
 
     this.baddies = [];
     
-    this.physics.add.collider(this.kirk, this.ground);
+    this.physics.add.collider(this.monk, this.ground);
 
     // @ts-ignore
-    this.physics.add.overlap(this.kirk, this.baddies, (kirk, enemy) => {
+    this.physics.add.overlap(this.monk, this.baddies, (kirk, enemy) => {
       this.handleEnemyOverlap(enemy);
     });
 
     this.cameras.main.setZoom(2);
-    this.cameras.main.startFollow(this.kirk);
+    this.cameras.main.startFollow(this.monk);
     this.cameras.main.setBackgroundColor(0x110011);
 
     const ost = this.sound.add('ost1', {
@@ -53,7 +55,7 @@ export class GameScene extends Scene {
     let isDown: boolean = false;
 
     this.input.on('pointerdown', ({ x, y }: { x: number, y: number }) => {
-      if (this.kirk === undefined) {
+      if (this.monk === undefined) {
         return;
       }
 
@@ -80,7 +82,7 @@ export class GameScene extends Scene {
         const si = pMath.Between(1, 3);
         this.sound.play(`sfx-jump${si}`);
 
-        this.kirk.body.setVelocity(dx * 1.5, dy * 2.5);
+        this.monk.body.setVelocity(dx * 1.5, dy * 2.5);
 
         if (!ost.isPlaying) {
           ost.play();
@@ -88,7 +90,7 @@ export class GameScene extends Scene {
         }
       }
       else {
-        this.kirk.body.setVelocityX(0);
+        this.monk.body.setVelocityX(0);
       }
     });
 
@@ -106,42 +108,42 @@ export class GameScene extends Scene {
     const { isDown } = this.input.pointer1;
 
     // Kirk anim logic
-    if (this.kirk.body.blocked.down) {
-      if (this.kirk.body.velocity.x === 0) {
-        this.kirk.play('kirk-idle', true);
+    if (this.monk.body.blocked.down) {
+      if (this.monk.body.velocity.x === 0) {
+        this.monk.play('Monk-Idle', true);
       }
       else {
-        this.kirk.play('kirk-run', true);
+        this.monk.play('Monk-Run', true);
       }
     }
     else {
-      if (this.kirk.body.velocity.y < 0) {
-        this.kirk.play('kirk-up', true);
+      if (this.monk.body.velocity.y < 0) {
+        this.monk.play('Monk-Up', true);
       }
       else {
-        this.kirk.play('kirk-down', true);
+        this.monk.play('Monk-Down', true);
       }
     }
 
     // FlipX logic
-    if (this.kirk.body.velocity.x > 0) {
-      this.kirk.setFlipX(false);
+    if (this.monk.body.velocity.x > 0) {
+      this.monk.setFlipX(false);
     }
-    else if (this.kirk.body.velocity.x < 0) {
-      this.kirk.setFlipX(true);
+    else if (this.monk.body.velocity.x < 0) {
+      this.monk.setFlipX(true);
     }
 
     // Bound resets
-    if (this.kirk.x < 0) {
-      this.kirk.setX(this.map.widthInPixels);
+    if (this.monk.x < 0) {
+      this.monk.setX(this.map.widthInPixels);
     }
-    else if (this.kirk.x > this.map.widthInPixels) {
-      this.kirk.setX(0);
+    else if (this.monk.x > this.map.widthInPixels) {
+      this.monk.setX(0);
     }
 
-    if (this.kirk.y > this.map.heightInPixels) {
-      this.kirk.setY(0);
-      this.kirk.body.setVelocityY(0);
+    if (this.monk.y > this.map.heightInPixels) {
+      this.monk.setY(0);
+      this.monk.body.setVelocityY(0);
     }
 
     // Camera recenter
@@ -158,14 +160,14 @@ export class GameScene extends Scene {
     }
 
     // Apply fake player-ground friction
-    const {x: vx} = this.kirk.body.velocity;
+    const {x: vx} = this.monk.body.velocity;
 
-    if (this.kirk.body.blocked.down) {
+    if (this.monk.body.blocked.down) {
       if ((vx < 0 && vx > -5 || vx > 0 && vx < 5)) {
-        this.kirk.body.setVelocityX(0);
+        this.monk.body.setVelocityX(0);
       }
       else {
-        this.kirk.body.setVelocityX(vx * 0.96);
+        this.monk.body.setVelocityX(vx * 0.96);
       }
     }
 
@@ -185,7 +187,7 @@ export class GameScene extends Scene {
     this.baddies.forEach((baddy: any) => {
       // Handle dumb enemy movement
       if (!baddy.getData('isDead')) {
-        this.physics.moveTo(baddy, this.kirk.x, this.kirk.y, 50);
+        this.physics.moveTo(baddy, this.monk.x, this.monk.y, 50);
       }
 
       // Cleanup dead baddies
@@ -219,7 +221,7 @@ export class GameScene extends Scene {
     const enemyIsDead = enemy.getData('isDead');
 
     if (!enemyIsDead) {
-      const kirkIsUnder = (this.kirk.y > (enemy.y - (enemy.displayHeight * 0.75)));
+      const kirkIsUnder = (this.monk.y > (enemy.y - (enemy.displayHeight * 0.75)));
   
       if (kirkIsUnder) {
         const si = pMath.Between(1, 3);
@@ -229,31 +231,31 @@ export class GameScene extends Scene {
         this.cameras.main.flash(300, 255, 0, 0);
 
         // Damage Kirk
-        if (this.kirk.body.velocity.x === 0) {
+        if (this.monk.body.velocity.x === 0) {
           const dir = (pMath.Between(0, 1) === 1 ? -1 : 1);
           const vel = pMath.Between(450, 500);
   
-          this.kirk.body.setVelocityX(-dir * vel);
+          this.monk.body.setVelocityX(-dir * vel);
         }
         else {
-          const vel = this.kirk.body.velocity.x;
+          const vel = this.monk.body.velocity.x;
   
-          this.kirk.body.setVelocityX(-vel);
+          this.monk.body.setVelocityX(-vel);
         }
   
-        if (this.kirk.body.velocity.y === 0) {
+        if (this.monk.body.velocity.y === 0) {
           const vel = pMath.Between(450, 500);
   
-          this.kirk.body.setVelocityY(-vel);
+          this.monk.body.setVelocityY(-vel);
         }
         else {
-          const vel = this.kirk.body.velocity.y;
+          const vel = this.monk.body.velocity.y;
           
-          this.kirk.body.setVelocityY(-vel);
+          this.monk.body.setVelocityY(-vel);
         }
       }
       else {
-        this.kirk.body.setVelocityY(-225);
+        this.monk.body.setVelocityY(-225);
       }
   
       // Kill enemy

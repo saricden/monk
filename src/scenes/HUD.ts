@@ -1,8 +1,8 @@
-import { Scene } from "phaser";
+import { Scene, GameObjects } from "phaser";
 
 export class HUD extends Scene {
   private parentScene?: any;
-  private hearts?: any[];
+  private hearts?: GameObjects.Sprite[];
   private txtScore?: any;
 
   constructor() {
@@ -38,12 +38,37 @@ export class HUD extends Scene {
 
   update() {
     const {score} = this.parentScene;
-    // console.log(this.hearts[0].frame);
-    // const {hp, maxHP} = this.parentScene;
+    const {hp, maxHP} = this.parentScene;
 
-    // for (let i = maxHP; i > hp; i -= 0.5) {
-    //   if (this.hearts[i].anims.current)
-    // }
+    if (this.hearts === undefined) {
+      return;
+    }
+
+    for (let i = 0; i < maxHP; i++) {
+      this.hearts[i].setFrame(0);
+    }
+
+    if (hp === 3.5) {
+
+    }
+    else if (hp === 3) {
+
+    }
+    else if (hp === 2.5) {
+
+    }
+    else if (hp === 2) {
+
+    }
+    else if (hp === 1.5) {
+
+    }
+    else if (hp === 1) {
+
+    }
+    else if (hp === 0.5) {
+
+    }
 
     this.txtScore.setText(score);
   }
