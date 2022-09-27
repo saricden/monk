@@ -20,7 +20,7 @@ export class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
 
     // Music
-    this.load.audio('ost1', 'assets/music/monk-loop1.mp3');
+    this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
 
     // SFX
     this.load.audio('sfx-jump1', 'assets/sfx/jump1.wav');
@@ -48,8 +48,8 @@ export class BootScene extends Scene {
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 50, 'A game by Kirk M. (@saricden)', {
       fontFamily: 'sans-serif',
-      color: '#FFF',
-      fontSize: '18px'
+      color: '#AAA',
+      fontSize: '15px'
     }).setOrigin(0.5, 0.5);
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 + 50, 'Tap to begin.', {
