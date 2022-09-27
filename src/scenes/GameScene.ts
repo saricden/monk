@@ -9,9 +9,9 @@ export class GameScene extends Scene {
   private maxQueuedEnemies: number = 3;
   private baddies: any;
   // @ts-ignore
-  private hp: number = 4;
+  private hp: number = 8;
   // @ts-ignore
-  private maxHP: number = 4;
+  private maxHP: number = 8;
   private score: number = 0;
 
   constructor() {
@@ -167,7 +167,7 @@ export class GameScene extends Scene {
         this.monk.body.setVelocityX(0);
       }
       else {
-        this.monk.body.setVelocityX(vx * 0.96);
+        this.monk.body.setVelocityX(vx * 0.99);
       }
     }
 

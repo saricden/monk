@@ -21,7 +21,7 @@ export class HUD extends Scene {
 
     this.hearts = [];
 
-    for (let i = 0; i < this.parentScene.maxHP; i++) {
+    for (let i = 0; i < (this.parentScene.maxHP / 2); i++) {
       this.hearts.push(
         this.add.sprite(20 + i * 40, window.innerHeight - 20, 'ui-heart', 0)
       );
@@ -45,7 +45,7 @@ export class HUD extends Scene {
     }
 
     for (let i = 0; i < maxHP; i++) {
-      this.hearts[i].setFrame(0);
+      // this.hearts[i].setFrame(0);
     }
 
     if (hp === 3.5) {
