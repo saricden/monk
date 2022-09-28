@@ -54,7 +54,7 @@ export class GameScene extends Scene {
 
     const ost = this.sound.add('ost1', {
       loop: true,
-      volume: 0.15
+      volume: 0.23
     });
 
     const pullThreshold = 100;
