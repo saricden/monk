@@ -19,8 +19,8 @@ export class GameScene extends Scene {
   }
 
   create() {
-    this.map = this.add.tilemap('map');
-    const tiles = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2);
+    this.map = this.add.tilemap('map-jungle');
+    const tiles = this.map.addTilesetImage('jungle', 'tileset-jungle', 16, 16, 1, 2);
     this.ground = this.map.createLayer('ground', tiles);
 
     this.ground.setCollisionByProperty({ collides: true });
@@ -35,6 +35,9 @@ export class GameScene extends Scene {
     
     this.physics.add.collider(this.monk, this.ground);
 
+    this.physics.world.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 8);
+    this.monk.body.setCollideWorldBounds(true);
+
     // @ts-ignore
     this.physics.add.overlap(this.monk, this.baddies, (kirk, enemy) => {
       this.handleEnemyOverlap(enemy);
@@ -42,6 +45,7 @@ export class GameScene extends Scene {
 
     this.cameras.main.setZoom(2);
     this.cameras.main.startFollow(this.monk);
+    this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
     this.cameras.main.setBackgroundColor(0x110011);
 
     const ost = this.sound.add('ost1', {
@@ -167,7 +171,7 @@ export class GameScene extends Scene {
         this.monk.body.setVelocityX(0);
       }
       else {
-        this.monk.body.setVelocityX(vx * 0.99);
+        this.monk.body.setVelocityX(vx * 0.97);
       }
     }
 
