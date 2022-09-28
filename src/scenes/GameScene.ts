@@ -115,7 +115,7 @@ export class GameScene extends Scene {
       const x = pMath.Between(0, (this.map.widthInPixels * (i / numClouds)));
       const y = (pMath.Between(0, Math.ceil(window.innerWidth / 2)) * 2); // *2 for zoom
       const fi = pMath.Between(1, 2);
-      const xsf = pMath.FloatBetween(0.95, 1);
+      const xsf = pMath.FloatBetween(0.2, 0.35);
       const ysf = 0;
 
       this.scenery.clouds[i] = this.add.sprite(x, y, 'cloud');
@@ -125,9 +125,16 @@ export class GameScene extends Scene {
       });
       this.scenery.clouds[i].setDepth(-2);
       this.scenery.clouds[i].setScrollFactor(xsf, ysf);
-
-
     }
+
+    // Render sun (static for now)
+    this.scenery.sun = this.add.sprite(
+      window.innerWidth / 1.5,
+      200,
+      'sun'
+    );
+    this.scenery.sun.setScrollFactor(0, 0);
+    this.scenery.sun.setDepth(-3);
 
     
   }

@@ -26,6 +26,7 @@ export class BootScene extends Scene {
 
     // Scenery props
     this.load.aseprite('clouds', 'assets/maps/scenery/clouds.png', 'assets/maps/scenery/clouds.json');
+    this.load.image('sun', 'assets/maps/scenery/sun.png');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
