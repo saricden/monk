@@ -146,6 +146,19 @@ export class GameScene extends Scene {
     this.scenery.sun.setDepth(lowestDepth - 1);
     this.scenery.sun.setBlendMode(BlendModes.ADD);
     this.scenery.sun.setScale(0.9);
+
+    // Render trees
+    this.map.getObjectLayer('trees').objects.forEach((tree) => {
+      if (tree.name === 'pine') {
+        const pine = this.add.sprite(tree.x as number, tree.y as number, 'tree-pine');
+        pine.setOrigin(0.5, 0.99);
+        pine.setDepth(-1);
+        pine.play({
+          key: 'tree-sway',
+          repeat: -1
+        });
+      }
+    });
     
   }
 

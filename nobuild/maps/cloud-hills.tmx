@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="7">
  <editorsettings>
-  <export target="../../../../one-player/kirk/public/assets/maps/cloud-hills.map.json" format="json"/>
+  <export target="../../public/assets/maps/cloud-hills.map.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="grassland" tilewidth="32" tileheight="32" tilecount="55" columns="11">
   <image source="../../../../one-player/kirk/nobuild/maps/grassland.png" width="352" height="160"/>
@@ -273,4 +273,24 @@
 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13
 </data>
  </layer>
+ <objectgroup id="2" name="trees">
+  <object id="1" name="pine" x="608" y="128">
+   <point/>
+  </object>
+  <object id="2" name="pine" x="768" y="128">
+   <point/>
+  </object>
+  <object id="3" name="pine" x="1664" y="608">
+   <point/>
+  </object>
+  <object id="4" name="pine" x="3296" y="544">
+   <point/>
+  </object>
+  <object id="5" name="pine" x="3648" y="288">
+   <point/>
+  </object>
+  <object id="6" name="pine" x="4448" y="672">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

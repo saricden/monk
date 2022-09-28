@@ -1,0 +1,35 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 2, "y": 2, "w": 48, "h": 131 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 9, "y": 1, "w": 44, "h": 127 },
+    "sourceSize": { "w": 64, "h": 128 },
+    "duration": 450
+   },
+   "1": {
+    "frame": { "x": 52, "y": 2, "w": 44, "h": 130 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 11, "y": 2, "w": 40, "h": 126 },
+    "sourceSize": { "w": 64, "h": 128 },
+    "duration": 450
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.39-arm64",
+  "image": "tree-pine.png",
+  "format": "RGBA8888",
+  "size": { "w": 96, "h": 133 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "tree-sway", "from": 0, "to": 1, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

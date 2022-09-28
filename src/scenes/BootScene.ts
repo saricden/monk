@@ -28,6 +28,7 @@ export class BootScene extends Scene {
     this.load.aseprite('clouds', 'assets/maps/scenery/clouds.png', 'assets/maps/scenery/clouds.json');
     this.load.image('sun', 'assets/maps/scenery/sun.png');
     this.load.image('sun2', 'assets/maps/scenery/sun2.png');
+    this.load.aseprite('tree-pine', 'assets/maps/scenery/tree-pine.png', 'assets/maps/scenery/tree-pine.json');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
@@ -51,6 +52,7 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('monk');
 
     this.anims.createFromAseprite('clouds');
+    this.anims.createFromAseprite('tree-pine');
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
       fontFamily: 'serif',
@@ -71,7 +73,7 @@ export class BootScene extends Scene {
     }).setOrigin(0.5, 0.5);
 
     // @ts-ignore
-    this.sound.setVolume(0);
+    // this.sound.setVolume(0);
 
     this.input.once('pointerup', () => {
       this.scene.start('scene-game');
