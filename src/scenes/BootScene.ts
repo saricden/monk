@@ -15,12 +15,17 @@ export class BootScene extends Scene {
     // UI
     this.load.aseprite('ui-heart', 'assets/ui/ui-heart.png', 'assets/ui/ui-heart.json');
 
-    // Maps
+    // Tilesets & maps
     this.load.image('tiles', 'assets/maps/tiles-ex.png');
-    this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
-
     this.load.image('tileset-jungle', 'assets/maps/jungle-ex.png');
+    this.load.image('tileset-grassland', 'assets/maps/grassland-ex.png');
+
+    this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
     this.load.tilemapTiledJSON('map-jungle', 'assets/maps/jungle.map.json');
+    this.load.tilemapTiledJSON('map-cloud-hills', 'assets/maps/cloud-hills.map.json');
+
+    // Scenery props
+    this.load.aseprite('clouds', 'assets/maps/scenery/clouds.png', 'assets/maps/scenery/clouds.json');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
@@ -43,6 +48,8 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('heart');
     this.anims.createFromAseprite('monk');
 
+    this.anims.createFromAseprite('clouds');
+
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
       fontFamily: 'serif',
       color: '#FFF',
@@ -62,7 +69,7 @@ export class BootScene extends Scene {
     }).setOrigin(0.5, 0.5);
 
     // @ts-ignore
-    // this.sound.setVolume(0);
+    this.sound.setVolume(0);
 
     this.input.once('pointerup', () => {
       this.scene.start('scene-game');

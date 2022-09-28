@@ -1,0 +1,36 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 2, "y": 2, "w": 68, "h": 43 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 6, "w": 64, "h": 39 },
+    "sourceSize": { "w": 64, "h": 48 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 2, "y": 47, "w": 66, "h": 33 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 9, "w": 62, "h": 29 },
+    "sourceSize": { "w": 64, "h": 48 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.39-arm64",
+  "image": "clouds.png",
+  "format": "RGBA8888",
+  "size": { "w": 70, "h": 80 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "cloud1", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "cloud2", "from": 1, "to": 1, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

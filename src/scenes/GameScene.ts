@@ -13,14 +13,15 @@ export class GameScene extends Scene {
   // @ts-ignore
   private maxHP: number = 8;
   private score: number = 0;
+  private scenery: Record<string, any[] | any> = {};
 
   constructor() {
     super('scene-game');
   }
 
   create() {
-    this.map = this.add.tilemap('map-jungle');
-    const tiles = this.map.addTilesetImage('jungle', 'tileset-jungle', 16, 16, 1, 2);
+    this.map = this.add.tilemap('map-cloud-hills');
+    const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
     this.ground = this.map.createLayer('ground', tiles);
 
     this.ground.setCollisionByProperty({ collides: true });
@@ -30,6 +31,9 @@ export class GameScene extends Scene {
       key: 'Monk-Down',
       repeat: -1
     });
+
+    this.ground.setDepth(-1);
+    this.monk.setDepth(0);
 
     this.baddies = [];
     
@@ -46,7 +50,7 @@ export class GameScene extends Scene {
     this.cameras.main.setZoom(2);
     this.cameras.main.startFollow(this.monk);
     this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
-    this.cameras.main.setBackgroundColor(0x110011);
+    this.cameras.main.setBackgroundColor(0x3366EE);
 
     const ost = this.sound.add('ost1', {
       loop: true,
@@ -102,6 +106,30 @@ export class GameScene extends Scene {
       parentScene: this,
       initialScore: this.score
     });
+
+    // Randomly add clouds
+    this.scenery.clouds = [];
+    const numClouds = pMath.Between(100, 200);
+
+    for (let i = 0; i < numClouds; i++) {
+      const x = pMath.Between(0, (this.map.widthInPixels * (i / numClouds)));
+      const y = (pMath.Between(0, Math.ceil(window.innerWidth / 2)) * 2); // *2 for zoom
+      const fi = pMath.Between(1, 2);
+      const xsf = pMath.FloatBetween(0.95, 1);
+      const ysf = 0;
+
+      this.scenery.clouds[i] = this.add.sprite(x, y, 'cloud');
+      this.scenery.clouds[i].play({
+        key: `cloud${fi}`,
+        repeat: 0
+      });
+      this.scenery.clouds[i].setDepth(-2);
+      this.scenery.clouds[i].setScrollFactor(xsf, ysf);
+
+
+    }
+
+    
   }
 
   update() {
