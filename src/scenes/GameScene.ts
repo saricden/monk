@@ -1,4 +1,4 @@
-import { Scene, Tilemaps, Math as pMath } from 'phaser';
+import { Scene, Tilemaps, Math as pMath, BlendModes } from 'phaser';
 
 export class GameScene extends Scene {
   private map?: Tilemaps.Tilemap;
@@ -110,12 +110,16 @@ export class GameScene extends Scene {
     // Randomly add clouds
     this.scenery.clouds = [];
     const numClouds = pMath.Between(100, 200);
+    let lowestDepth = 0;
 
     for (let i = 0; i < numClouds; i++) {
+      const depthRatio = pMath.FloatBetween(0.05, 0.2);
+      const depth = Math.floor(depthRatio * -100);
+      const scale = ((depthRatio * 2) + 0.6); // Max depthRatio * 2 = 0.4, so add 0.6 to make max 1
       const x = pMath.Between(0, (this.map.widthInPixels * (i / numClouds)));
       const y = (pMath.Between(0, Math.ceil(window.innerWidth / 2)) * 2); // *2 for zoom
       const fi = pMath.Between(1, 2);
-      const xsf = pMath.FloatBetween(0.2, 0.35);
+      const xsf = depthRatio;
       const ysf = 0;
 
       this.scenery.clouds[i] = this.add.sprite(x, y, 'cloud');
@@ -123,19 +127,25 @@ export class GameScene extends Scene {
         key: `cloud${fi}`,
         repeat: 0
       });
-      this.scenery.clouds[i].setDepth(-2);
+      this.scenery.clouds[i].setDepth(depth);
       this.scenery.clouds[i].setScrollFactor(xsf, ysf);
+      this.scenery.clouds[i].setScale(scale);
+
+      if (depth < lowestDepth) {
+        lowestDepth = depth;
+      }
     }
 
     // Render sun (static for now)
     this.scenery.sun = this.add.sprite(
       window.innerWidth / 1.5,
       200,
-      'sun'
+      'sun2'
     );
     this.scenery.sun.setScrollFactor(0, 0);
-    this.scenery.sun.setDepth(-3);
-
+    this.scenery.sun.setDepth(lowestDepth - 1);
+    this.scenery.sun.setBlendMode(BlendModes.ADD);
+    this.scenery.sun.setScale(0.9);
     
   }
 

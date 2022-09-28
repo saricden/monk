@@ -27,6 +27,7 @@ export class BootScene extends Scene {
     // Scenery props
     this.load.aseprite('clouds', 'assets/maps/scenery/clouds.png', 'assets/maps/scenery/clouds.json');
     this.load.image('sun', 'assets/maps/scenery/sun.png');
+    this.load.image('sun2', 'assets/maps/scenery/sun2.png');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
@@ -70,7 +71,7 @@ export class BootScene extends Scene {
     }).setOrigin(0.5, 0.5);
 
     // @ts-ignore
-    // this.sound.setVolume(0);
+    this.sound.setVolume(0);
 
     this.input.once('pointerup', () => {
       this.scene.start('scene-game');
