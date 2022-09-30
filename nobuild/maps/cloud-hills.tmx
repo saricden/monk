@@ -4,7 +4,7 @@
   <export target="../../public/assets/maps/cloud-hills.map.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="grassland" tilewidth="32" tileheight="32" tilecount="55" columns="11">
-  <image source="../../../../one-player/kirk/nobuild/maps/grassland.png" width="352" height="160"/>
+  <image source="grassland.png" width="352" height="160"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>

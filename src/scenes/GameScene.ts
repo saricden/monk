@@ -1,12 +1,9 @@
-import { Scene, Tilemaps, Math as pMath, BlendModes } from 'phaser';
+import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
 
 export class GameScene extends Scene {
   private map?: Tilemaps.Tilemap;
   private ground?: any;
   private monk?: any;
-  private gameStarted: boolean = false;
-  private queuedEnemyCount: number = 0;
-  private maxQueuedEnemies: number = 3;
   private baddies: any;
   // @ts-ignore
   private hp: number = 8;
@@ -43,10 +40,11 @@ export class GameScene extends Scene {
     this.monk.body.setCollideWorldBounds(true);
 
     // @ts-ignore
-    this.physics.add.overlap(this.monk, this.baddies, (kirk, enemy) => {
-      this.handleEnemyOverlap(enemy);
-    });
+    // this.physics.add.overlap(this.monk, this.baddies, (kirk, enemy) => {
+    //   this.handleEnemyOverlap(enemy);
+    // });
 
+    // this.cameras.main.setZoom(0.2);
     this.cameras.main.setZoom(2);
     this.cameras.main.startFollow(this.monk);
     this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
@@ -94,7 +92,7 @@ export class GameScene extends Scene {
 
         if (!ost.isPlaying) {
           ost.play();
-          this.gameStarted = true;
+          // this.gameStarted = true;
         }
       }
       else {
@@ -143,9 +141,21 @@ export class GameScene extends Scene {
       'sun2'
     );
     this.scenery.sun.setScrollFactor(0, 0);
-    this.scenery.sun.setDepth(lowestDepth - 1);
     this.scenery.sun.setBlendMode(BlendModes.ADD);
     this.scenery.sun.setScale(0.9);
+    this.scenery.sun.setData('movementAngle', -Math.PI / 2);
+    this.scenery.sun.setDepth(lowestDepth - 1);
+
+    this.scenery.moon = this.add.sprite(
+      -window.innerWidth / 1.5,
+      400,
+      'moon'
+    );
+    this.scenery.moon.setScrollFactor(0, 0);
+    this.scenery.moon.setBlendMode(BlendModes.ADD);
+    this.scenery.moon.setScale(0.9);
+    this.scenery.moon.setData('movementAngle', -Math.PI);
+    this.scenery.moon.setDepth(lowestDepth - 1);
 
     // Render trees
     this.map.getObjectLayer('trees').objects.forEach((tree) => {
@@ -159,7 +169,14 @@ export class GameScene extends Scene {
         });
       }
     });
-    
+
+    // Darkness
+    this.scenery.darkness = this.add.graphics();
+    this.scenery.darkness.fillStyle(0x110011, 0.5);
+    this.scenery.darkness.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    this.scenery.darkness.setScrollFactor(0, 0);
+    this.scenery.darkness.setAlpha(0);
+    this.scenery.darkness.setDepth(100);
   }
 
   update() {
@@ -234,18 +251,19 @@ export class GameScene extends Scene {
     }
 
     // Queue enemy spawns
-    const doQueueEnemy = (this.gameStarted && this.queuedEnemyCount < this.maxQueuedEnemies);
+    // const doQueueEnemy = (this.gameStarted && this.queuedEnemyCount < this.maxQueuedEnemies);
     
-    if (doQueueEnemy) {
-      const delay = pMath.Between(1500, 10000);
+    // if (doQueueEnemy) {
+    //   const delay = pMath.Between(1500, 10000);
 
-      this.time.delayedCall(delay, () => {
-        this.spawnBadGuy();
-      });
+    //   // this.time.delayedCall(delay, () => {
+    //   //   this.spawnBadGuy();
+    //   // });
 
-      this.queuedEnemyCount++;
-    }
+    //   this.queuedEnemyCount++;
+    // }
 
+    // Handle baddy logic
     this.baddies.forEach((baddy: any) => {
       // Handle dumb enemy movement
       if (!baddy.getData('isDead')) {
@@ -253,87 +271,149 @@ export class GameScene extends Scene {
       }
 
       // Cleanup dead baddies
-    });    
-  }
-
-  spawnBadGuy() {
-    if (this.map === undefined) {
-      return;
-    }
-
-    const x = pMath.Between(0, this.map.widthInPixels);
-    const y = -100;
-
-    const badGuy = this.physics.add.sprite(x, y, 'bad-guy');
-    const collider = this.physics.add.collider(badGuy, this.ground);
-    
-    badGuy.setData('physicsCollider', collider);
-    badGuy.setData('isDead', false);
-    badGuy.body.setAllowGravity(false);
-    badGuy.play({
-      key: 'bad-guy-anim',
-      repeat: -1
     });
 
-    this.baddies.push(badGuy);
-    this.queuedEnemyCount--;
+    // Day / night cycle
+    this.cycleDayNight();
   }
 
-  handleEnemyOverlap(enemy: any) {
-    const enemyIsDead = enemy.getData('isDead');
+  cycleDayNight() {
+    // Rotate sun and moon around point, at given radius
+    const radius = pMath.Distance.Between(0, 0, window.innerWidth, window.innerHeight) / 2.9;
 
-    if (!enemyIsDead) {
-      const kirkIsUnder = (this.monk.y > (enemy.y - (enemy.displayHeight * 0.75)));
-  
-      if (kirkIsUnder) {
-        const si = pMath.Between(1, 3);
-        this.sound.play(`sfx-hurt${si}`);
+    this.scenery.sun.setPosition(
+      window.innerWidth / 1.5,
+      200
+    );
+    this.scenery.moon.setPosition(
+      -window.innerWidth / 1.5,
+      400
+    );
+    
+    pMath.RotateAroundDistance(
+      this.scenery.sun,
+      window.innerWidth / 2,
+      window.innerHeight / 2 + 100,
+      this.scenery.sun.getData('movementAngle'),
+      radius
+    );
 
-        this.cameras.main.shake(500, 0.01);
-        this.cameras.main.flash(300, 255, 0, 0);
+    pMath.RotateAroundDistance(
+      this.scenery.moon,
+      window.innerWidth / 2,
+      window.innerHeight / 2 + 100,
+      this.scenery.moon.getData('movementAngle'),
+      radius
+    );
 
-        // Damage Kirk
-        if (this.monk.body.velocity.x === 0) {
-          const dir = (pMath.Between(0, 1) === 1 ? -1 : 1);
-          const vel = pMath.Between(450, 500);
+    this.scenery.sun.setData(
+      'movementAngle',
+      pMath.Angle.Wrap(this.scenery.sun.getData('movementAngle') + 0.005)
+    );
+    this.scenery.moon.setData(
+      'movementAngle',
+      pMath.Angle.Wrap(this.scenery.moon.getData('movementAngle') + 0.005)
+    );
+
+    // Apply global darkness tint
+    const t = this.scenery.sun.getData('movementAngle') / Math.PI;
+    const darkRatio = Math.abs(t);
+    
+    this.scenery.darkness.setAlpha(darkRatio);
+    
+    // Fade clouds
+    this.scenery.clouds.forEach((cloud: any) => {
+      const a = Math.max(1 - darkRatio - 0.3, 0);
+      cloud.setAlpha(a);
+    });
+
+    // Adjust bgcolor
+    const r = (50 * (1 - darkRatio));
+    const g = (125 * (1 - darkRatio));
+    const b = (250 * (1 - darkRatio));
+    const skyColor = Display.Color.GetColor(r, g, b);
+
+    this.cameras.main.setBackgroundColor(skyColor);
+  }
+
+  // spawnBadGuy() {
+  //   if (this.map === undefined) {
+  //     return;
+  //   }
+
+  //   const x = pMath.Between(0, this.map.widthInPixels);
+  //   const y = -100;
+
+  //   const badGuy = this.physics.add.sprite(x, y, 'bad-guy');
+  //   const collider = this.physics.add.collider(badGuy, this.ground);
+    
+  //   badGuy.setData('physicsCollider', collider);
+  //   badGuy.setData('isDead', false);
+  //   badGuy.body.setAllowGravity(false);
+  //   badGuy.play({
+  //     key: 'bad-guy-anim',
+  //     repeat: -1
+  //   });
+
+  //   this.baddies.push(badGuy);
+  //   this.queuedEnemyCount--;
+  // }
+
+  // handleEnemyOverlap(enemy: any) {
+  //   const enemyIsDead = enemy.getData('isDead');
+
+  //   if (!enemyIsDead) {
+  //     const kirkIsUnder = (this.monk.y > (enemy.y - (enemy.displayHeight * 0.75)));
   
-          this.monk.body.setVelocityX(-dir * vel);
-        }
-        else {
-          const vel = this.monk.body.velocity.x;
+  //     if (kirkIsUnder) {
+  //       const si = pMath.Between(1, 3);
+  //       this.sound.play(`sfx-hurt${si}`);
+
+  //       this.cameras.main.shake(500, 0.01);
+  //       this.cameras.main.flash(300, 255, 0, 0);
+
+  //       // Damage Kirk
+  //       if (this.monk.body.velocity.x === 0) {
+  //         const dir = (pMath.Between(0, 1) === 1 ? -1 : 1);
+  //         const vel = pMath.Between(450, 500);
   
-          this.monk.body.setVelocityX(-vel);
-        }
+  //         this.monk.body.setVelocityX(-dir * vel);
+  //       }
+  //       else {
+  //         const vel = this.monk.body.velocity.x;
   
-        if (this.monk.body.velocity.y === 0) {
-          const vel = pMath.Between(450, 500);
+  //         this.monk.body.setVelocityX(-vel);
+  //       }
   
-          this.monk.body.setVelocityY(-vel);
-        }
-        else {
-          const vel = this.monk.body.velocity.y;
+  //       if (this.monk.body.velocity.y === 0) {
+  //         const vel = pMath.Between(450, 500);
+  
+  //         this.monk.body.setVelocityY(-vel);
+  //       }
+  //       else {
+  //         const vel = this.monk.body.velocity.y;
           
-          this.monk.body.setVelocityY(-vel);
-        }
-      }
-      else {
-        this.monk.body.setVelocityY(-225);
-      }
+  //         this.monk.body.setVelocityY(-vel);
+  //       }
+  //     }
+  //     else {
+  //       this.monk.body.setVelocityY(-225);
+  //     }
   
-      // Kill enemy
-      const si = pMath.Between(1, 3);
-      this.sound.play(`sfx-enemy${si}`);
+  //     // Kill enemy
+  //     const si = pMath.Between(1, 3);
+  //     this.sound.play(`sfx-enemy${si}`);
 
-      const collider = enemy.getData('physicsCollider');
+  //     const collider = enemy.getData('physicsCollider');
   
-      this.physics.world.removeCollider(collider);
+  //     this.physics.world.removeCollider(collider);
 
-      enemy.setData('isDead', true);
-      enemy.body.setAllowGravity(true);
-      enemy.body.setVelocity(0, -175);
+  //     enemy.setData('isDead', true);
+  //     enemy.body.setAllowGravity(true);
+  //     enemy.body.setVelocity(0, -175);
 
-      // Increase score
-      this.score++;
-    }
-  }
+  //     // Increase score
+  //     this.score++;
+  //   }
+  // }
 }
