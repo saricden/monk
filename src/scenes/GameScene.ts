@@ -156,6 +156,7 @@ export class GameScene extends Scene {
     this.scenery.moon.setScale(0.9);
     this.scenery.moon.setData('movementAngle', -Math.PI);
     this.scenery.moon.setDepth(lowestDepth - 1);
+    this.scenery.moon.setFlip(true, true);
 
     // Render trees
     this.map.getObjectLayer('trees').objects.forEach((tree) => {
@@ -172,7 +173,7 @@ export class GameScene extends Scene {
 
     // Darkness
     this.scenery.darkness = this.add.graphics();
-    this.scenery.darkness.fillStyle(0x110011, 0.5);
+    this.scenery.darkness.fillStyle(0x110011, 0.65);
     this.scenery.darkness.fillRect(0, 0, window.innerWidth, window.innerHeight);
     this.scenery.darkness.setScrollFactor(0, 0);
     this.scenery.darkness.setAlpha(0);
@@ -308,11 +309,11 @@ export class GameScene extends Scene {
 
     this.scenery.sun.setData(
       'movementAngle',
-      pMath.Angle.Wrap(this.scenery.sun.getData('movementAngle') + 0.005)
+      pMath.Angle.Wrap(this.scenery.sun.getData('movementAngle') + 0.00075)
     );
     this.scenery.moon.setData(
       'movementAngle',
-      pMath.Angle.Wrap(this.scenery.moon.getData('movementAngle') + 0.005)
+      pMath.Angle.Wrap(this.scenery.moon.getData('movementAngle') + 0.00075)
     );
 
     // Apply global darkness tint
