@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="57">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="61">
  <editorsettings>
   <export target="../../public/assets/maps/cloud-hills.map.json" format="json"/>
  </editorsettings>

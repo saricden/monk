@@ -26,6 +26,9 @@ export class GameScene extends Scene {
     this.monk = this.physics.add.sprite(200, 0, 'monk');
     this.monk.body.setSize(10, 29);
     this.monk.body.setOffset(10, 2);
+    this.monk.setData('hanging', false);
+    this.monk.setData('hangingY', null);
+    this.monk.setData('pullupVelocityX', 0);
     this.monk.play({
       key: 'Monk-Down',
       repeat: -1
@@ -36,7 +39,9 @@ export class GameScene extends Scene {
 
     this.baddies = [];
     
-    this.physics.add.collider(this.monk, this.ground);
+    this.physics.add.collider(this.monk, this.ground, (monk, tile) => {
+      this.handleHang(monk, tile);
+    });
 
     this.physics.world.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 8);
     this.monk.body.setCollideWorldBounds(true);
@@ -48,6 +53,7 @@ export class GameScene extends Scene {
 
     // this.cameras.main.setZoom(0.2);
     this.cameras.main.setZoom(2);
+    // this.cameras.main.setZoom(1);
     this.cameras.main.startFollow(this.monk);
     this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
     this.cameras.main.setBackgroundColor(0x3366EE);
@@ -89,6 +95,16 @@ export class GameScene extends Scene {
       if (didPull) {
         const si = pMath.Between(1, 3);
         this.sound.play(`sfx-jump${si}`);
+
+        if (this.monk.getData('hanging')) {
+          this.monk.body.setAllowGravity(true); // Off when hanging
+          this.monk.setData('hanging', false);
+          this.monk.setData('hangingY', null);
+
+          if (dx < 0 && this.monk.flipX || dx > 0 && !this.monk.flipX) {
+            this.monk.setData('pullupVelocityX', dx * 1.5);
+          }
+        }
 
         this.monk.body.setVelocity(dx * 1.5, dy * 2.5);
 
@@ -207,7 +223,6 @@ export class GameScene extends Scene {
       const ratio = pMath.FloatBetween(0.5, 1);
       this.scenery.stars[i] = this.add.sprite(x, y, 'star');
       this.scenery.stars[i].setAlpha(0);
-      this.scenery.stars[i].setData('maxAlpha', ratio);
       this.scenery.stars[i].setScrollFactor(0, 0);
       this.scenery.stars[i].setScale(ratio - 0.25);
       this.scenery.stars[i].setDepth(lowestDepth - 2);
@@ -216,6 +231,7 @@ export class GameScene extends Scene {
         repeat: -1,
         repeatDelay: pMath.Between(0, 1000)
       });
+      this.scenery.stars[i].setBlendMode(BlendModes.ADD);
     }
   }
 
@@ -226,21 +242,39 @@ export class GameScene extends Scene {
 
     const { isDown } = this.input.pointer1;
 
+    // Extra velocity for edge pull-up
+    if (this.monk.getData('pullupVelocityX') !== 0 && !this.monk.body.blocked.down) {
+      this.monk.body.setVelocityX(this.monk.getData('pullupVelocityX'));
+    }
+    else if (this.monk.body.blocked.down) {
+      this.monk.setData('pullupVelocityX', 0);
+    }
+
+    // Hanging logic
+    if (this.monk.getData('hanging')) {
+      this.monk.setY(this.monk.getData('hangingY'));
+    }
+
     // Kirk anim logic
-    if (this.monk.body.blocked.down) {
-      if (this.monk.body.velocity.x === 0) {
-        this.monk.play('Monk-Idle', true);
-      }
-      else {
-        this.monk.play('Monk-Run', true);
-      }
+    if (!this.monk.body.allowGravity) {
+      this.monk.play('Monk-Hang', true);
     }
     else {
-      if (this.monk.body.velocity.y < 0) {
-        this.monk.play('Monk-Up', true);
+      if (this.monk.body.blocked.down) {
+        if (this.monk.body.velocity.x === 0) {
+          this.monk.play('Monk-Idle', true);
+        }
+        else {
+          this.monk.play('Monk-Run', true);
+        }
       }
       else {
-        this.monk.play('Monk-Down', true);
+        if (this.monk.body.velocity.y < 0) {
+          this.monk.play('Monk-Up', true);
+        }
+        else {
+          this.monk.play('Monk-Down', true);
+        }
       }
     }
 
@@ -319,6 +353,23 @@ export class GameScene extends Scene {
     this.cycleDayNight();
   }
 
+  handleHang(monk: any, tile: any) {
+    if (
+        (monk.body.blocked.left || monk.body.blocked.right) &&
+        !monk.getData('hanging') &&
+        monk.getData('pullupVelocityX') === 0
+    ) {
+      const tileAbove = this.map?.getTileAt(tile.x, tile.y - 1, false, this.ground);
+
+      if (tileAbove === null) {
+        monk.body.setVelocity(0, 0);
+        monk.setData('hangingY', (tile.y * tile.height + 14));
+        monk.body.setAllowGravity(false);
+        monk.setData('hanging', true);
+      }
+    }
+  }
+
   cycleDayNight() {
     // Rotate sun and moon around point, at given radius
     const radius = pMath.Distance.Between(0, 0, window.innerWidth, window.innerHeight) / 2.9;
@@ -380,7 +431,7 @@ export class GameScene extends Scene {
     // Fade stars
     this.scenery.stars.forEach((star: any) => {
       if (darkRatio >= 0.7) {
-        const a = (((darkRatio - 0.7) / 0.3) * star.getData('maxAlpha'));
+        const a = (((darkRatio - 0.7) / 0.3) * 1);
         star.setAlpha(a);
       }
       else {
