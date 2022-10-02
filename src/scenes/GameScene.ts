@@ -1,9 +1,5 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
 
-function map(min:number, max:number, omin:number, omax:number, n:number){
-  return Math.max(omin, Math.min(((n-min)/(max-min))*(omax-omin)+omin, omax));
-}
-
 export class GameScene extends Scene {
   private map?: Tilemaps.Tilemap;
   private ground?: any;
