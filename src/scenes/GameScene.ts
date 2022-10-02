@@ -91,6 +91,7 @@ export class GameScene extends Scene {
       const dx = (startX - x);
       const dy = (startY - y);
       const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
+      this.monk.setData('pullupVelocityX', 0);
 
       if (didPull) {
         const si = pMath.Between(1, 3);
@@ -357,7 +358,8 @@ export class GameScene extends Scene {
     if (
         (monk.body.blocked.left || monk.body.blocked.right) &&
         !monk.getData('hanging') &&
-        monk.getData('pullupVelocityX') === 0
+        monk.getData('pullupVelocityX') === 0 &&
+        tile.pixelY < monk.y
     ) {
       const tileAbove = this.map?.getTileAt(tile.x, tile.y - 1, false, this.ground);
 
