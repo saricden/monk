@@ -30,6 +30,8 @@ export class BootScene extends Scene {
     this.load.image('sun2', 'assets/maps/scenery/sun2.png');
     this.load.aseprite('tree-pine', 'assets/maps/scenery/tree-pine.png', 'assets/maps/scenery/tree-pine.json');
     this.load.image('moon', 'assets/maps/scenery/moon.png');
+    this.load.image('tree-bonsai', 'assets/maps/scenery/tree-bonsai.png');
+    this.load.aseprite('star', 'assets/maps/scenery/star.png', 'assets/maps/scenery/star.json');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');

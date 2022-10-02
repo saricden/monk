@@ -1,5 +1,9 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
 
+function map(min:number, max:number, omin:number, omax:number, n:number){
+  return Math.max(omin, Math.min(((n-min)/(max-min))*(omax-omin)+omin, omax));
+}
+
 export class GameScene extends Scene {
   private map?: Tilemaps.Tilemap;
   private ground?: any;
@@ -164,10 +168,12 @@ export class GameScene extends Scene {
         const pine = this.add.sprite(tree.x as number, tree.y as number, 'tree-pine');
         pine.setOrigin(0.5, 0.99);
         pine.setDepth(-1);
-        pine.play({
-          key: 'tree-sway',
-          repeat: -1
-        });
+        pine.setFrame(pMath.Between(0, 1));
+      }
+      else if (tree.name === 'bonsai') {
+        const bonsai = this.add.sprite(tree.x as number, tree.y as number, 'tree-bonsai');
+        bonsai.setOrigin(0.5, 0.92);
+        bonsai.setDepth(-1);
       }
     });
 
@@ -178,6 +184,22 @@ export class GameScene extends Scene {
     this.scenery.darkness.setScrollFactor(0, 0);
     this.scenery.darkness.setAlpha(0);
     this.scenery.darkness.setDepth(100);
+
+    // Stars
+    const numStars = 40;
+    this.scenery.stars = [];
+
+    for (let i = 0; i < numStars; i++) {
+      const x = pMath.Between(0, window.innerWidth);
+      const y = (pMath.Between(0, Math.ceil(window.innerHeight / 2)));
+      const ratio = pMath.FloatBetween(0.5, 1);
+      this.scenery.stars[i] = this.add.sprite(x, y, 'star');
+      this.scenery.stars[i].setAlpha(0);
+      this.scenery.stars[i].setData('maxAlpha', ratio);
+      this.scenery.stars[i].setScrollFactor(0, 0);
+      this.scenery.stars[i].setScale(ratio - 0.25);
+      this.scenery.stars[i].setDepth(lowestDepth - 2);
+    }
   }
 
   update() {
@@ -335,6 +357,18 @@ export class GameScene extends Scene {
     const skyColor = Display.Color.GetColor(r, g, b);
 
     this.cameras.main.setBackgroundColor(skyColor);
+
+    // Fade stars
+    // 0.7 - 0.75 - fade
+    this.scenery.stars.forEach((star: any) => {
+      if (darkRatio >= 0.7) {
+        const a = (((darkRatio - 0.7) / 0.3) * star.getData('maxAlpha'));
+        star.setAlpha(a);
+      }
+      else {
+        star.setAlpha(0);
+      }
+    });
   }
 
   // spawnBadGuy() {
