@@ -195,6 +195,11 @@ export class GameScene extends Scene {
       this.scenery.stars[i].setScrollFactor(0, 0);
       this.scenery.stars[i].setScale(ratio - 0.25);
       this.scenery.stars[i].setDepth(lowestDepth - 2);
+      this.scenery.stars[i].play({
+        key: 'star-anim',
+        repeat: -1,
+        repeatDelay: pMath.Between(0, 1000)
+      });
     }
   }
 

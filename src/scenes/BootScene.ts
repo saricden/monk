@@ -56,6 +56,7 @@ export class BootScene extends Scene {
 
     this.anims.createFromAseprite('clouds');
     this.anims.createFromAseprite('tree-pine');
+    this.anims.createFromAseprite('star');
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
       fontFamily: 'serif',
