@@ -24,6 +24,8 @@ export class GameScene extends Scene {
     this.ground.setCollisionByProperty({ collides: true });
 
     this.monk = this.physics.add.sprite(200, 0, 'monk');
+    this.monk.body.setSize(10, 29);
+    this.monk.body.setOffset(10, 2);
     this.monk.play({
       key: 'Monk-Down',
       repeat: -1
@@ -158,18 +160,32 @@ export class GameScene extends Scene {
     this.scenery.moon.setDepth(lowestDepth - 1);
     this.scenery.moon.setFlip(true, true);
 
-    // Render trees
-    this.map.getObjectLayer('trees').objects.forEach((tree) => {
-      if (tree.name === 'pine') {
-        const pine = this.add.sprite(tree.x as number, tree.y as number, 'tree-pine');
-        pine.setOrigin(0.5, 0.99);
+    // Render map objects
+    this.map.getObjectLayer('scenery').objects.forEach((obj) => {
+      if (obj.name === 'pine') {
+        const pine = this.add.sprite(obj.x as number, obj.y as number, 'tree-pine');
+        pine.setOrigin(0.5, 0.995);
         pine.setDepth(-1);
         pine.setFrame(pMath.Between(0, 1));
       }
-      else if (tree.name === 'bonsai') {
-        const bonsai = this.add.sprite(tree.x as number, tree.y as number, 'tree-bonsai');
+      else if (obj.name === 'bonsai') {
+        const bonsai = this.add.sprite(obj.x as number, obj.y as number, 'tree-bonsai');
         bonsai.setOrigin(0.5, 0.92);
         bonsai.setDepth(-1);
+      }
+      else if (obj.name === 'grass') {
+        const grass = this.physics.add.sprite(obj.x as number, obj.y as number, 'grass');
+        grass.setOrigin(0.5, 0.88);
+        grass.setDepth(1);
+        grass.body.setAllowGravity(false);
+        grass.setFrame(0);
+
+        this.physics.add.overlap(this.monk, grass, (monk: any, grass: any) => {
+          const d2g = pMath.Distance.Between(monk.x, monk.y, grass.x, grass.y) - 10;
+          const frameFraction = (grass.displayWidth / 8);
+          const frameNum = Math.min(Math.floor(d2g / frameFraction), 3);
+          grass.setFrame(3 - frameNum);
+        });
       }
     });
 
@@ -231,9 +247,11 @@ export class GameScene extends Scene {
     // FlipX logic
     if (this.monk.body.velocity.x > 0) {
       this.monk.setFlipX(false);
+      this.monk.body.setOffset(10, 2);
     }
     else if (this.monk.body.velocity.x < 0) {
       this.monk.setFlipX(true);
+      this.monk.body.setOffset(4, 2);
     }
 
     // Bound resets
@@ -360,7 +378,6 @@ export class GameScene extends Scene {
     this.cameras.main.setBackgroundColor(skyColor);
 
     // Fade stars
-    // 0.7 - 0.75 - fade
     this.scenery.stars.forEach((star: any) => {
       if (darkRatio >= 0.7) {
         const a = (((darkRatio - 0.7) / 0.3) * star.getData('maxAlpha'));

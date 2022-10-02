@@ -32,6 +32,7 @@ export class BootScene extends Scene {
     this.load.image('moon', 'assets/maps/scenery/moon.png');
     this.load.image('tree-bonsai', 'assets/maps/scenery/tree-bonsai.png');
     this.load.aseprite('star', 'assets/maps/scenery/star.png', 'assets/maps/scenery/star.json');
+    this.load.aseprite('grass', 'assets/maps/scenery/grass.png', 'assets/maps/scenery/grass.json');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
@@ -57,6 +58,7 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('clouds');
     this.anims.createFromAseprite('tree-pine');
     this.anims.createFromAseprite('star');
+    this.anims.createFromAseprite('grass');
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
       fontFamily: 'serif',
