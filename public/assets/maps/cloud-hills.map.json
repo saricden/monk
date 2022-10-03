@@ -627,9 +627,56 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"enemies",
+         "objects":[
+                {
+                 "class":"",
+                 "height":0,
+                 "id":61,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":350.413436962078,
+                 "y":138.410724531845
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":68,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":433.988837306348,
+                 "y":139.272860049032
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":70,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":484.064472380158,
+                 "y":137.707996452976
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":3,
- "nextobjectid":61,
+ "nextlayerid":4,
+ "nextobjectid":71,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.1",

@@ -1,3 +1,9 @@
+@font-face {
+  font-family: Silkscreen;
+  src: url(/assets/fonts/Silkscreen/Silkscreen-Regular.ttf);
+  font-weight: 400;
+}
+
 html,
 body {
   margin: 0;

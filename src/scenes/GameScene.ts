@@ -1,16 +1,18 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
+import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
 export class GameScene extends Scene {
-  private map?: Tilemaps.Tilemap;
-  private ground?: any;
+  public map?: Tilemaps.Tilemap;
+  public ground?: any;
   private monk?: any;
-  private baddies: any;
+  public baddies: any;
   // @ts-ignore
-  private hp: number = 8;
+  public hp: number = 8;
   // @ts-ignore
-  private maxHP: number = 8;
-  private score: number = 0;
+  public maxHP: number = 8;
+  public score: number = 0;
   private scenery: Record<string, any[] | any> = {};
+  public enemies: Record<string, any[] | any> = {};
 
   constructor() {
     super('scene-game');
@@ -177,35 +179,6 @@ export class GameScene extends Scene {
     this.scenery.moon.setDepth(lowestDepth - 1);
     this.scenery.moon.setFlip(true, true);
 
-    // Render map objects
-    this.map.getObjectLayer('scenery').objects.forEach((obj) => {
-      if (obj.name === 'pine') {
-        const pine = this.add.sprite(obj.x as number, obj.y as number, 'tree-pine');
-        pine.setOrigin(0.5, 0.995);
-        pine.setDepth(-1);
-        pine.setFrame(pMath.Between(0, 1));
-      }
-      else if (obj.name === 'bonsai') {
-        const bonsai = this.add.sprite(obj.x as number, obj.y as number, 'tree-bonsai');
-        bonsai.setOrigin(0.5, 0.92);
-        bonsai.setDepth(-1);
-      }
-      else if (obj.name === 'grass') {
-        const grass = this.physics.add.sprite(obj.x as number, obj.y as number, 'grass');
-        grass.setOrigin(0.5, 0.88);
-        grass.setDepth(1);
-        grass.body.setAllowGravity(false);
-        grass.setFrame(0);
-
-        this.physics.add.overlap(this.monk, grass, (monk: any, grass: any) => {
-          const d2g = pMath.Distance.Between(monk.x, monk.y, grass.x, grass.y) - 10;
-          const frameFraction = (grass.displayWidth / 8);
-          const frameNum = Math.min(Math.floor(d2g / frameFraction), 3);
-          grass.setFrame(3 - frameNum);
-        });
-      }
-    });
-
     // Darkness
     this.scenery.darkness = this.add.graphics();
     this.scenery.darkness.fillStyle(0x110011, 0.65);
@@ -234,9 +207,59 @@ export class GameScene extends Scene {
       });
       this.scenery.stars[i].setBlendMode(BlendModes.ADD);
     }
+
+    // Enemies
+    this.enemies.mushrooms = [];
+
+    this.map.getObjectLayer('enemies').objects.forEach((enemy) => {
+      if (enemy.name === 'mushroom-sm-red') {
+        const mushroom = new MushroomRedSm(this, enemy.x as number, enemy.y as number);
+        this.enemies.mushrooms.push(mushroom);
+      }
+    });
+
+    this.physics.add.overlap(this.monk, this.enemies.mushrooms, (monk, mushroom: any) => {
+      mushroom.handlePlayerCollision(monk);
+    });
+
+    // Render map objects
+    this.map.getObjectLayer('scenery').objects.forEach((obj) => {
+      if (obj.name === 'pine') {
+        const pine = this.add.sprite(obj.x as number, obj.y as number, 'tree-pine');
+        pine.setOrigin(0.5, 0.995);
+        pine.setDepth(-1);
+        pine.setFrame(pMath.Between(0, 1));
+      }
+      else if (obj.name === 'bonsai') {
+        const bonsai = this.add.sprite(obj.x as number, obj.y as number, 'tree-bonsai');
+        bonsai.setOrigin(0.5, 0.92);
+        bonsai.setDepth(-1);
+      }
+      else if (obj.name === 'grass') {
+        const grass = this.physics.add.sprite(obj.x as number, obj.y as number, 'grass');
+        grass.setOrigin(0.5, 0.88);
+        grass.setDepth(1);
+        grass.body.setAllowGravity(false);
+        grass.setFrame(0);
+
+        this.physics.add.overlap(
+          [
+            this.monk,
+            ...this.enemies.mushrooms
+          ],
+          grass,
+          (monk: any, grass: any) => {
+            const d2g = Math.abs(pMath.Distance.Between(monk.x, monk.y, grass.x, grass.y) - 10);
+            const frameFraction = (grass.displayWidth / 8);
+            const frameNum = Math.min(Math.floor(d2g / frameFraction), 3);
+            grass.setFrame(3 - frameNum);
+          }
+        );
+      }
+    });
   }
 
-  update() {
+  update(time: number, delta: number) {
     if (this.map === undefined) {
       return;
     }
@@ -352,6 +375,13 @@ export class GameScene extends Scene {
 
     // Day / night cycle
     this.cycleDayNight();
+
+    // Update enemies
+    for (let enemyType of Object.values(this.enemies)) {
+      for (let enemy of enemyType) {
+        enemy.update?.(time, delta);
+      }
+    }
   }
 
   handleHang(monk: any, tile: any) {

@@ -27,10 +27,10 @@ export class HUD extends Scene {
       );
     }
 
-    this.txtScore = this.add.text(window.innerWidth - 20, window.innerHeight - 20, '0', {
-      fontSize: '16px',
+    this.txtScore = this.add.text(window.innerWidth - 20, window.innerHeight - 22, '0', {
+      fontSize: '22px',
       color: '#FFF',
-      fontFamily: 'sans-serif'
+      fontFamily: 'Silkscreen'
     });
 
     this.txtScore.setOrigin(1, 0.5);

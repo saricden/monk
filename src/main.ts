@@ -17,7 +17,7 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 775 },
-      // debug: true
+      debug: (new URLSearchParams(window.location.search).get('debug') === 'true')
     }
   },
   pixelArt: true,

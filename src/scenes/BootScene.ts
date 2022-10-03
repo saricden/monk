@@ -34,6 +34,9 @@ export class BootScene extends Scene {
     this.load.aseprite('star', 'assets/maps/scenery/star.png', 'assets/maps/scenery/star.json');
     this.load.aseprite('grass', 'assets/maps/scenery/grass.png', 'assets/maps/scenery/grass.json');
 
+    // Enemies
+    this.load.aseprite('mushroom-sm-red', 'assets/sprites/mushroom-sm-red.png', 'assets/sprites/mushroom-sm-red.json');
+
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
 
@@ -44,9 +47,8 @@ export class BootScene extends Scene {
     this.load.audio('sfx-hurt1', 'assets/sfx/hurt1.wav');
     this.load.audio('sfx-hurt2', 'assets/sfx/hurt2.wav');
     this.load.audio('sfx-hurt3', 'assets/sfx/hurt3.wav');
-    this.load.audio('sfx-enemy1', 'assets/sfx/enemy1.wav');
-    this.load.audio('sfx-enemy2', 'assets/sfx/enemy2.wav');
-    this.load.audio('sfx-enemy3', 'assets/sfx/enemy3.wav');
+    this.load.audio('sfx-mushroom-sm-jump', 'assets/sfx/mushroom-jump.wav');
+    this.load.audio('sfx-mushroom-sm-die', 'assets/sfx/mushroom-die.wav');
   }
 
   create() {
@@ -55,25 +57,28 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('heart');
     this.anims.createFromAseprite('monk');
 
+    this.anims.createFromAseprite('mushroom-sm-red');
+
     this.anims.createFromAseprite('clouds');
     this.anims.createFromAseprite('tree-pine');
     this.anims.createFromAseprite('star');
     this.anims.createFromAseprite('grass');
 
-    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'M O N K', {
-      fontFamily: 'serif',
+    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'MONK', {
+      fontFamily: 'Silkscreen',
       color: '#FFF',
       fontSize: '72px'
     }).setOrigin(0.5, 0.5);
 
-    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 50, 'A game by Kirk M. (@saricden)', {
-      fontFamily: 'sans-serif',
+    this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 40, 'A game by\nKirk M. (@saricden)', {
+      fontFamily: 'Silkscreen',
       color: '#AAA',
-      fontSize: '15px'
+      fontSize: '15px',
+      align: 'center'
     }).setOrigin(0.5, 0.5);
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 + 50, 'Tap to begin.', {
-      fontFamily: 'sans-serif',
+      fontFamily: 'Silkscreen',
       color: '#FFF',
       fontSize: '18px'
     }).setOrigin(0.5, 0.5);
