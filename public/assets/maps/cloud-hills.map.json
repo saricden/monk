@@ -668,6 +668,54 @@
                  "width":0,
                  "x":484.064472380158,
                  "y":137.707996452976
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":71,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":628.553544416045,
+                 "y":92.8485733660216
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":72,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":594.126545302801,
+                 "y":97.5431641541912
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":73,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":662.458922330604,
+                 "y":94.4134369620781
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":74,
+                 "name":"mushroom-sm-red",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":735.485890146576,
+                 "y":94.9350581607637
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -676,7 +724,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":71,
+ "nextobjectid":75,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.1",

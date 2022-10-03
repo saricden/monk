@@ -38,37 +38,27 @@ export class HUD extends Scene {
 
   update() {
     const {score} = this.parentScene;
-    const {hp, maxHP} = this.parentScene;
+    const {hp} = this.parentScene;
 
     if (this.hearts === undefined) {
       return;
     }
 
-    for (let i = 0; i < maxHP; i++) {
-      // this.hearts[i].setFrame(0);
+    const hpPerHeart = 2;
+
+    for (let i = 0; i < this.hearts.length; i++) {
+      const heartHP = Math.max(Math.min(hpPerHeart, hp - i * hpPerHeart), 0);
+      const frame = 2 - heartHP;
+
+      this.hearts[i].setFrame(frame);
     }
 
-    if (hp === 3.5) {
-
-    }
-    else if (hp === 3) {
-
-    }
-    else if (hp === 2.5) {
-
-    }
-    else if (hp === 2) {
-
-    }
-    else if (hp === 1.5) {
-
-    }
-    else if (hp === 1) {
-
-    }
-    else if (hp === 0.5) {
-
-    }
+    // let hp = ...;
+    // const hpPerHeart = 2;
+    // for(let i = 0; i < hearts; i++) {
+    //   let heartHp = Math.min(hpPerHeart, hp - i*hpPerHeart);
+    //   let frame = 2 - heartHp;
+    // }
 
     this.txtScore.setText(score);
   }

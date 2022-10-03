@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="71">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="275" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="75">
  <editorsettings>
   <export target="../../public/assets/maps/cloud-hills.map.json" format="json"/>
  </editorsettings>
@@ -427,6 +427,18 @@
    <point/>
   </object>
   <object id="70" name="mushroom-sm-red" x="484.064" y="137.708">
+   <point/>
+  </object>
+  <object id="71" name="mushroom-sm-red" x="628.554" y="92.8486">
+   <point/>
+  </object>
+  <object id="72" name="mushroom-sm-red" x="594.127" y="97.5432">
+   <point/>
+  </object>
+  <object id="73" name="mushroom-sm-red" x="662.459" y="94.4134">
+   <point/>
+  </object>
+  <object id="74" name="mushroom-sm-red" x="735.486" y="94.9351">
    <point/>
   </object>
  </objectgroup>

@@ -163,11 +163,12 @@ export class MushroomRedSm extends Sprite {
           const si = pMath.Between(1, 3);
 
           this.scene.sound.play(`sfx-hurt${si}`);
-
+          
+          this.scene.hp -= 1;
           
           if (!player.getData('hanging')) {
-            player.body.setVelocityY(-150);
             player.body.setVelocityX((this.x - player.x) * -3);
+            player.body.setVelocityY(-150);
           }
           else {
             player.body.setAllowGravity(true); // Off when hanging
@@ -175,7 +176,7 @@ export class MushroomRedSm extends Sprite {
             player.setData('hangingY', null);
           }
 
-          this.body.setVelocityX((this.x - player.x) * 3);
+          this.body.setVelocityX((this.flipX ? 1 : -1) * this.speed * 2);
           this.setXFlip(!this.flipX);
         }
       }

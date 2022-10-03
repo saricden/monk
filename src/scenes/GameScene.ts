@@ -1,4 +1,4 @@
-import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
+import { Scene, Tilemaps, Math as pMath, BlendModes, Display, type Sound } from 'phaser';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
 export class GameScene extends Scene {
@@ -13,6 +13,7 @@ export class GameScene extends Scene {
   public score: number = 0;
   private scenery: Record<string, any[] | any> = {};
   public enemies: Record<string, any[] | any> = {};
+  private ost!: Sound.BaseSound;
 
   constructor() {
     super('scene-game');
@@ -60,7 +61,7 @@ export class GameScene extends Scene {
     this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
     this.cameras.main.setBackgroundColor(0x3366EE);
 
-    const ost = this.sound.add('ost1', {
+    this.ost = this.sound.add('ost1', {
       loop: true,
       volume: 0.23
     });
@@ -111,8 +112,8 @@ export class GameScene extends Scene {
 
         this.monk.body.setVelocity(dx * 1.5, dy * 2.5);
 
-        if (!ost.isPlaying) {
-          ost.play();
+        if (!this.ost.isPlaying) {
+          this.ost.play();
           // this.gameStarted = true;
         }
       }
@@ -381,6 +382,14 @@ export class GameScene extends Scene {
       for (let enemy of enemyType) {
         enemy.update?.(time, delta);
       }
+    }
+
+    // Watch for game-over
+    if (this.hp <= 0) {
+      this.ost.stop();
+      this.hp = this.maxHP;
+      this.scene.stop('scene-hud');
+      this.scene.restart();
     }
   }
 
