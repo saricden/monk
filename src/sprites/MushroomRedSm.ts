@@ -37,7 +37,7 @@ const machine = createStateMachine<MushroomRedSm>(
 
           mushroom.scene.time.delayedCall(delayToHop, () => {
             if (mushroom.body && mushroom.hp > 0) {
-              mushroom.scene.sound.play('sfx-mushroom-sm-jump');
+              mushroom.scene.playSpatialSound(mushroom.x, mushroom.y, 'sfx-mushroom-sm-jump');
               mushroom.body.setVelocityY(-200);
             }
           });
@@ -64,7 +64,7 @@ const machine = createStateMachine<MushroomRedSm>(
       dead: {
         transitions: {},
         onEnter: (mushroom) => {
-          mushroom.scene.sound.play('sfx-mushroom-sm-die');
+          mushroom.scene.playSpatialSound(mushroom.x, mushroom.y, 'sfx-mushroom-sm-die');
 
           if (mushroom.movementTimer) {
             mushroom.movementTimer.destroy();

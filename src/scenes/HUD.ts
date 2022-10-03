@@ -53,13 +53,6 @@ export class HUD extends Scene {
       this.hearts[i].setFrame(frame);
     }
 
-    // let hp = ...;
-    // const hpPerHeart = 2;
-    // for(let i = 0; i < hearts; i++) {
-    //   let heartHp = Math.min(hpPerHeart, hp - i*hpPerHeart);
-    //   let frame = 2 - heartHp;
-    // }
-
     this.txtScore.setText(score);
   }
 }

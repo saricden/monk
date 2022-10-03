@@ -481,6 +481,14 @@ export class GameScene extends Scene {
     });
   }
 
+  playSpatialSound(x: number, y: number, key: string) {
+    const silenceThreshold = 400;
+    const d2p = pMath.Distance.Between(x, y, this.monk.x, this.monk.y);
+    const volume = (1 - Math.min(d2p / silenceThreshold, 1));
+    
+    this.sound.play(key, { volume });
+  }
+
   // spawnBadGuy() {
   //   if (this.map === undefined) {
   //     return;
