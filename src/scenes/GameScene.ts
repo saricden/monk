@@ -1,4 +1,4 @@
-import { Scene, Tilemaps, Math as pMath, BlendModes, Display, type Sound } from 'phaser';
+import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
 import { Birb } from '../sprites/Birb';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
