@@ -19,7 +19,8 @@ export class Feather extends Sprite {
     this.setDepth(2);
     this.play({
       key: 'feather-pulse',
-      repeat: -1
+      repeat: -1,
+      repeatDelay: 1000
     });
 
     this.scene.physics.add.collider(this, this.scene.ground);

@@ -230,6 +230,14 @@
     "spriteSourceSize": { "x": 1, "y": 1, "w": 14, "h": 15 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 10
+   },
+   "29": {
+    "frame": { "x": 2, "y": 2, "w": 18, "h": 19 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 1, "y": 1, "w": 14, "h": 15 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 10
    }
  },
  "meta": {
@@ -241,7 +249,7 @@
   "scale": "1",
   "frameTags": [
    { "name": "feather-idle", "from": 0, "to": 0, "direction": "forward" },
-   { "name": "feather-pulse", "from": 1, "to": 28, "direction": "forward" }
+   { "name": "feather-pulse", "from": 1, "to": 29, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }

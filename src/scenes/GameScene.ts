@@ -117,8 +117,8 @@ export class GameScene extends Scene {
       const dx = (startX - x);
       const dy = (startY - y);
       const didPull = (pMath.Distance.Between(x, y, startX, startY) >= pullThreshold);
+      
       this.monk.setData('pullupVelocityX', 0);
-
       this.physics.world.timeScale = 1;
       this.time.timeScale = 1;
       this.monk.body.setAllowGravity(true);
@@ -133,6 +133,25 @@ export class GameScene extends Scene {
         // Lose a feather if jumping mid-air
         if (!this.monk.getData('hanging') && !this.monk.body.blocked.down) {
           this.feathers--;
+
+          const feather = this.physics.add.sprite(this.monk.x, this.monk.y, 'feather');
+          feather.play({
+            key: 'feather-idle',
+            repeat: 0
+          });
+          feather.body.setMaxVelocityY(10);
+          feather.body.setVelocityY(-10);
+          feather.setScale(0.5);
+
+          this.tweens.add({
+            targets: feather,
+            alpha: 0,
+            duration: 750,
+            angle: 360,
+            onComplete: () => {
+              feather.destroy();
+            }
+          });
         }
 
         if (this.monk.getData('hanging')) {
