@@ -1,6 +1,7 @@
 import { GameObjects, Physics, Math as pMath, type Time } from "phaser";
 import { createStateMachine } from "../createStateMachine";
 import { type GameScene } from "../scenes/GameScene";
+import { Feather } from "./Feather";
 const {Sprite} = GameObjects;
 
 const machine = createStateMachine<MushroomRedSm>(
@@ -79,7 +80,7 @@ const machine = createStateMachine<MushroomRedSm>(
           mushroom.groundCollider.destroy();
           mushroom.setDepth(2);
 
-          mushroom.scene.score++;
+          new Feather(mushroom.scene, mushroom.x, mushroom.y - 156);
         },
         onTick(mushroom) {
           if (!mushroom.scene.map) {

@@ -3,7 +3,7 @@ import { Scene, GameObjects } from "phaser";
 export class HUD extends Scene {
   private parentScene?: any;
   private hearts?: GameObjects.Sprite[];
-  private txtScore?: any;
+  private txtFeathers?: any;
 
   constructor() {
     super('scene-hud');
@@ -27,17 +27,20 @@ export class HUD extends Scene {
       );
     }
 
-    this.txtScore = this.add.text(window.innerWidth - 20, window.innerHeight - 22, '0', {
+    const featherIcon = this.add.sprite(window.innerWidth - 20, window.innerHeight - 22, 'feather');
+    featherIcon.setOrigin(1, 0.5);
+
+    this.txtFeathers = this.add.text(window.innerWidth - 20 - featherIcon.displayWidth - 10, window.innerHeight - 22, '0', {
       fontSize: '22px',
       color: '#FFF',
       fontFamily: 'Silkscreen'
     });
 
-    this.txtScore.setOrigin(1, 0.5);
+    this.txtFeathers.setOrigin(1, 0.5);
   }
 
   update() {
-    const {score} = this.parentScene;
+    const {feathers} = this.parentScene;
     const {hp} = this.parentScene;
 
     if (this.hearts === undefined) {
@@ -53,6 +56,6 @@ export class HUD extends Scene {
       this.hearts[i].setFrame(frame);
     }
 
-    this.txtScore.setText(score);
+    this.txtFeathers.setText(feathers);
   }
 }

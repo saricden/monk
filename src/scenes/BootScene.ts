@@ -38,6 +38,9 @@ export class BootScene extends Scene {
     this.load.aseprite('mushroom-sm-red', 'assets/sprites/mushroom-sm-red.png', 'assets/sprites/mushroom-sm-red.json');
     this.load.aseprite('birb', 'assets/sprites/birb.png', 'assets/sprites/birb.json');
 
+    // Items
+    this.load.aseprite('feather', 'assets/sprites/feather.png', 'assets/sprites/feather.json');
+
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
 
@@ -65,6 +68,8 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('tree-pine');
     this.anims.createFromAseprite('star');
     this.anims.createFromAseprite('grass');
+    
+    this.anims.createFromAseprite('feather');
 
     this.add.text(window.innerWidth / 2, window.innerHeight / 2 - 100, 'MONK', {
       fontFamily: 'Silkscreen',

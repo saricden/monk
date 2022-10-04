@@ -1,6 +1,7 @@
 import { GameObjects, Physics, Math as pMath } from "phaser";
 import { createStateMachine } from "../createStateMachine";
 import { type GameScene } from "../scenes/GameScene";
+import { Feather } from "./Feather";
 const {Sprite} = GameObjects;
 
 const machine = createStateMachine<Birb>(
@@ -26,7 +27,7 @@ const machine = createStateMachine<Birb>(
           birb.setFlipX(monk.x < birb.x);
 
           if (d2p <= birb.triggerThreshold) {
-            birb.body.setVelocityY(-birb.speed);
+            birb.body.setVelocityY(-birb.speedY);
           }
         }
       },
@@ -60,7 +61,7 @@ const machine = createStateMachine<Birb>(
           const xDir = (birb.x >= monk.x - birb.range && birb.x <= monk.x + birb.range ? 0 : birb.x > monk.x ? -1 : 1);
           const yDir = (birb.y <= monk.y - birb.altitude ? 0 : -1);
 
-          birb.body.setVelocity(xDir * birb.speed, yDir * birb.speed);
+          birb.body.setVelocity(xDir * birb.speedX, yDir * birb.speedY);
           birb.setFlipX(monk.x < birb.x);
         }
       },
@@ -89,10 +90,11 @@ const machine = createStateMachine<Birb>(
           });
 
           birb.body.setVelocityY(-300);
+          birb.body.setAllowGravity(true);
           birb.groundCollider.destroy();
           birb.setDepth(2);
 
-          birb.scene.score++;
+          new Feather(birb.scene, birb.x, birb.y - 156);
         },
       }
     }
@@ -106,7 +108,8 @@ export class Birb extends Sprite {
   groundCollider: Physics.Arcade.Collider;
   maxHP: number = 1;
   hp: number = this.maxHP;
-  speed: number = 50;
+  speedX: number = 50;
+  speedY: number = 30;
   altitude: number = 150;
   triggerThreshold: number = 100;
   range: number = 8;
@@ -160,7 +163,7 @@ export class Birb extends Sprite {
             player.setData('hangingY', null);
           }
 
-          this.body.setVelocityX((this.flipX ? 1 : -1) * this.speed * 2);
+          this.body.setVelocityX((this.flipX ? 1 : -1) * this.speedX * 2);
           this.setFlipX(!this.flipX);
 
           this.cooldown = true;

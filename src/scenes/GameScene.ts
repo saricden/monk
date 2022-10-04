@@ -11,10 +11,11 @@ export class GameScene extends Scene {
   public hp: number = 8;
   // @ts-ignore
   public maxHP: number = 8;
-  public score: number = 0;
+  public feathers: number = 0;
   private scenery: Record<string, any[] | any> = {};
   public enemies: Record<string, any[] | any> = {};
-  private ost!: Sound.BaseSound;
+  private ost!: any;
+  public audioRate: number = 1;
 
   constructor() {
     super('scene-game');
@@ -87,7 +88,26 @@ export class GameScene extends Scene {
         const dx = (startX - x);
         const dy = (startY - y);
 
-        this.cameras.main.setFollowOffset(dx * 0.1, dy * 0.1);
+        if (this.monk.body.blocked.down || this.feathers > 0) {
+          this.cameras.main.setFollowOffset(dx * 0.1, dy * 0.1);
+
+          if (!this.monk.body.blocked.down && !this.monk.getData('hanging')) {
+            const d2s = pMath.Distance.Between(x, y, startX, startY);
+
+            if (this.physics.world.timeScale === 1) {
+              this.cameras.main.flash(500, 200, 215, 255);
+            }
+
+            this.physics.world.timeScale = 2;
+            this.time.timeScale = 0.5;
+            this.monk.body.setAllowGravity(false);
+            this.monk.body.setVelocity(0, 0);
+            this.cameras.main.setZoom(2 - Math.min((d2s / window.innerWidth * 1), 1));
+            this.ost.setRate(0.5);
+            this.audioRate = 0.5;
+          }
+        }
+
       }
     });
 
@@ -97,9 +117,21 @@ export class GameScene extends Scene {
       const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
       this.monk.setData('pullupVelocityX', 0);
 
-      if (didPull) {
+      this.physics.world.timeScale = 1;
+      this.time.timeScale = 1;
+      this.monk.body.setAllowGravity(true);
+      this.cameras.main.zoomTo(2, 200);
+      this.ost.setRate(1);
+      this.audioRate = 1;
+
+      if (didPull && (this.monk.getData('hanging') || this.monk.body.blocked.down || this.feathers > 0)) {
         const si = pMath.Between(1, 3);
         this.sound.play(`sfx-jump${si}`);
+
+        // Lose a feather if jumping mid-air
+        if (!this.monk.getData('hanging') && !this.monk.body.blocked.down) {
+          this.feathers--;
+        }
 
         if (this.monk.getData('hanging')) {
           this.monk.body.setAllowGravity(true); // Off when hanging
@@ -124,8 +156,7 @@ export class GameScene extends Scene {
     });
 
     this.scene.launch('scene-hud', {
-      parentScene: this,
-      initialScore: this.score
+      parentScene: this
     });
 
     // Randomly add clouds
@@ -303,7 +334,7 @@ export class GameScene extends Scene {
     }
 
     // Kirk anim logic
-    if (!this.monk.body.allowGravity) {
+    if (this.monk.getData('hanging')) {
       this.monk.play('Monk-Hang', true);
     }
     else {
@@ -410,6 +441,7 @@ export class GameScene extends Scene {
     if (this.hp <= 0) {
       this.ost.stop();
       this.hp = this.maxHP;
+      this.feathers = 0;
       this.scene.stop('scene-hud');
       this.scene.restart();
     }
@@ -508,7 +540,10 @@ export class GameScene extends Scene {
     const d2p = pMath.Distance.Between(x, y, this.monk.x, this.monk.y);
     const volume = (1 - Math.min(d2p / silenceThreshold, 1));
     
-    this.sound.play(key, { volume });
+    this.sound.play(key, {
+      volume,
+      rate: this.audioRate
+    });
   }
 
   // spawnBadGuy() {
