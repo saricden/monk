@@ -1,10 +1,11 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display, type Sound } from 'phaser';
+import { Birb } from '../sprites/Birb';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
 export class GameScene extends Scene {
   public map?: Tilemaps.Tilemap;
   public ground?: any;
-  private monk?: any;
+  public monk?: any;
   public baddies: any;
   // @ts-ignore
   public hp: number = 8;
@@ -211,16 +212,37 @@ export class GameScene extends Scene {
 
     // Enemies
     this.enemies.mushrooms = [];
+    this.enemies.birbs = [];
 
     this.map.getObjectLayer('enemies').objects.forEach((enemy) => {
       if (enemy.name === 'mushroom-sm-red') {
-        const mushroom = new MushroomRedSm(this, enemy.x as number, enemy.y as number);
+        const mushroom = new MushroomRedSm(
+          this,
+          enemy.x as number,
+          enemy.y as number
+        );
+
         this.enemies.mushrooms.push(mushroom);
+      }
+      else if (enemy.name === 'birb') {
+        const birb = new Birb(
+          this,
+          enemy.x as number,
+          enemy.y as number
+        );
+
+        this.enemies.birbs.push(birb);
       }
     });
 
-    this.physics.add.overlap(this.monk, this.enemies.mushrooms, (monk, mushroom: any) => {
-      mushroom.handlePlayerCollision(monk);
+    this.physics.add.overlap(
+      this.monk,
+      [
+        ...this.enemies.mushrooms,
+        ...this.enemies.birbs
+      ],
+      (monk, enemy: any) => {
+      enemy.handlePlayerCollision(monk);
     });
 
     // Render map objects

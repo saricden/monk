@@ -716,6 +716,18 @@
                  "width":0,
                  "x":735.485890146576,
                  "y":94.9350581607637
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":76,
+                 "name":"birb",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":773.085858849304,
+                 "y":20.7729382922122
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -724,7 +736,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":75,
+ "nextobjectid":77,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.1",

@@ -36,6 +36,7 @@ export class BootScene extends Scene {
 
     // Enemies
     this.load.aseprite('mushroom-sm-red', 'assets/sprites/mushroom-sm-red.png', 'assets/sprites/mushroom-sm-red.json');
+    this.load.aseprite('birb', 'assets/sprites/birb.png', 'assets/sprites/birb.json');
 
     // Music
     this.load.audio('ost1', 'assets/music/ost-fast-loop1.mp3');
@@ -58,6 +59,7 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('monk');
 
     this.anims.createFromAseprite('mushroom-sm-red');
+    this.anims.createFromAseprite('birb');
 
     this.anims.createFromAseprite('clouds');
     this.anims.createFromAseprite('tree-pine');
