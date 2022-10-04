@@ -68,7 +68,7 @@ export class GameScene extends Scene {
       volume: 0.23
     });
 
-    const pullThreshold = 100;
+    const pullThreshold = 50;
     let startX: number = 0;
     let startY: number = 0;
     let isDown: boolean = false;
@@ -87,11 +87,12 @@ export class GameScene extends Scene {
       if (isDown) {
         const dx = (startX - x);
         const dy = (startY - y);
+        const isPulling = (pMath.Distance.Between(x, y, startX, startY) >= pullThreshold);
 
         if (this.monk.body.blocked.down || this.feathers > 0) {
           this.cameras.main.setFollowOffset(dx * 0.1, dy * 0.1);
 
-          if (!this.monk.body.blocked.down && !this.monk.getData('hanging')) {
+          if (isPulling && !this.monk.body.blocked.down && !this.monk.getData('hanging')) {
             const d2s = pMath.Distance.Between(x, y, startX, startY);
 
             if (this.physics.world.timeScale === 1) {
@@ -102,7 +103,7 @@ export class GameScene extends Scene {
             this.time.timeScale = 0.5;
             this.monk.body.setAllowGravity(false);
             this.monk.body.setVelocity(0, 0);
-            this.cameras.main.setZoom(2 - Math.min((d2s / window.innerWidth * 1), 1));
+            this.cameras.main.setZoom(2 - Math.min((d2s / 300 * 1), 1.5));
             this.ost.setRate(0.5);
             this.audioRate = 0.5;
           }
@@ -114,7 +115,7 @@ export class GameScene extends Scene {
     this.input.on('pointerup', ({ x, y }: { x: number, y: number }) => {
       const dx = (startX - x);
       const dy = (startY - y);
-      const didPull = (Math.abs(dx) > pullThreshold || Math.abs(y) > pullThreshold);
+      const didPull = (pMath.Distance.Between(x, y, startX, startY) >= pullThreshold);
       this.monk.setData('pullupVelocityX', 0);
 
       this.physics.world.timeScale = 1;
