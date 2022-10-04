@@ -103,6 +103,7 @@ export class GameScene extends Scene {
             this.time.timeScale = 0.5;
             this.monk.body.setAllowGravity(false);
             this.monk.body.setVelocity(0, 0);
+            this.monk.setData('pullupVelocityX', 0);
             this.cameras.main.setZoom(2 - Math.min((d2s / 300 * 1), 1.5));
             this.ost.setRate(0.5);
             this.audioRate = 0.5;
