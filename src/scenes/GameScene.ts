@@ -1,5 +1,6 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
 import { Birb } from '../sprites/Birb';
+import { Gate } from '../sprites/Gate';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
 export class GameScene extends Scene {
@@ -22,8 +23,8 @@ export class GameScene extends Scene {
   }
 
   create() {
-    this.map = this.add.tilemap('map-cloud-hills');
-    const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
+    this.map = this.add.tilemap('map-temple');
+    const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
     this.ground = this.map.createLayer('ground', tiles);
 
     this.ground.setCollisionByProperty({ collides: true });
@@ -330,6 +331,30 @@ export class GameScene extends Scene {
             grass.setFrame(3 - frameNum);
           }
         );
+      }
+      else if (obj.name === 'gate') {
+        const gate = new Gate(
+          this,
+          obj.x as number,
+          obj.y as number
+        );
+
+        gate.setDepth(-1);
+
+        const mask = this.add.sprite(obj.x as number + 2, obj.y as number + 3, 'gate-mask');
+        mask.setOrigin(0.5, 1);
+        mask.setDepth(-1);
+        mask.play({
+          key: 'gate-mask-flicker',
+          repeat: -1
+        });
+
+        const level = this.add.image(obj.x as number, obj.y as number + 3, 'map-preview-cloud-hills');
+        level.setScale(0.1);
+        level.setScrollFactor(0.7, 1);
+        level.setOrigin(0.7, 1);
+        level.mask = new Display.Masks.BitmapMask(this, mask);
+        level.setDepth(-1);
       }
     });
   }

@@ -23,6 +23,7 @@ export class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', 'assets/maps/map1.map.json');
     this.load.tilemapTiledJSON('map-jungle', 'assets/maps/jungle.map.json');
     this.load.tilemapTiledJSON('map-cloud-hills', 'assets/maps/cloud-hills.map.json');
+    this.load.tilemapTiledJSON('map-temple', 'assets/maps/temple.json');
 
     // Scenery props
     this.load.aseprite('clouds', 'assets/maps/scenery/clouds.png', 'assets/maps/scenery/clouds.json');
@@ -33,6 +34,11 @@ export class BootScene extends Scene {
     this.load.image('tree-bonsai', 'assets/maps/scenery/tree-bonsai.png');
     this.load.aseprite('star', 'assets/maps/scenery/star.png', 'assets/maps/scenery/star.json');
     this.load.aseprite('grass', 'assets/maps/scenery/grass.png', 'assets/maps/scenery/grass.json');
+    this.load.aseprite('gate', 'assets/maps/scenery/gate.png', 'assets/maps/scenery/gate.json');
+
+    // Level previews
+    this.load.aseprite('gate-mask', 'assets/maps/scenery/gate-mask.png', 'assets/maps/scenery/gate-mask.json');
+    this.load.image('map-preview-cloud-hills', 'assets/maps/cloud-hills.png');
 
     // Enemies
     this.load.aseprite('mushroom-sm-red', 'assets/sprites/mushroom-sm-red.png', 'assets/sprites/mushroom-sm-red.json');
@@ -68,6 +74,8 @@ export class BootScene extends Scene {
     this.anims.createFromAseprite('tree-pine');
     this.anims.createFromAseprite('star');
     this.anims.createFromAseprite('grass');
+    this.anims.createFromAseprite('gate');
+    this.anims.createFromAseprite('gate-mask');
     
     this.anims.createFromAseprite('feather');
 
