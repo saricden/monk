@@ -365,8 +365,8 @@ export class GameScene extends Scene {
 
 
         const level = this.add.image(obj.x as number, obj.y as number + 3, 'map-preview-cloud-hills');
-        level.setScale(0.1);
-        level.setScrollFactor(0.7, 1);
+        // level.setScale(0.1);
+        level.setScrollFactor(0.85, 1);
         level.setOrigin(0.7, 1);
         level.setMask(mask);
         level.setDepth(-1);
