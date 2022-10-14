@@ -341,19 +341,34 @@ export class GameScene extends Scene {
 
         gate.setDepth(-1);
 
-        const mask = this.add.sprite(obj.x as number + 2, obj.y as number + 3, 'gate-mask');
-        mask.setOrigin(0.5, 1);
-        mask.setDepth(-1);
-        mask.play({
-          key: 'gate-mask-flicker',
-          repeat: -1
-        });
+        // const mask = this.add.sprite(obj.x as number + 2, obj.y as number + 3, 'gate-mask');
+        // mask.setOrigin(0.5, 1);
+        // mask.setDepth(-1);
+        // mask.play({
+        //   key: 'gate-mask-flicker',
+        //   repeat: -1
+        // });
+
+        const rect = this.add.graphics();
+        rect.fillStyle(0xFFFFFF);
+        rect.setDepth(-1);
+
+        rect.beginPath();
+        rect.fillRect(
+          obj.x as number - 14,
+          obj.y as number - 49,
+          32,
+          50
+        );
+
+        const mask = rect.createGeometryMask();
+
 
         const level = this.add.image(obj.x as number, obj.y as number + 3, 'map-preview-cloud-hills');
         level.setScale(0.1);
         level.setScrollFactor(0.7, 1);
         level.setOrigin(0.7, 1);
-        level.mask = new Display.Masks.BitmapMask(this, mask);
+        level.setMask(mask);
         level.setDepth(-1);
       }
     });
