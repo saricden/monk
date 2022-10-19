@@ -23,8 +23,12 @@ export class GameScene extends Scene {
   }
 
   create() {
-    this.map = this.add.tilemap('map-temple');
-    const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
+    // this.map = this.add.tilemap('map-temple');
+    // const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
+
+    this.map = this.add.tilemap('map-cloud-hills');
+    const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
+
     this.ground = this.map.createLayer('ground', tiles);
 
     this.ground.setCollisionByProperty({ collides: true });
