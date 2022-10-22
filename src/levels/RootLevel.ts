@@ -1,5 +1,4 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
-import { HUD } from '../scenes/HUD';
 import { Birb } from '../sprites/Birb';
 import { Gate } from '../sprites/Gate';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
