@@ -8,9 +8,7 @@ export class RootLevel extends Scene {
   public ground?: any;
   public monk?: any;
   public baddies: any;
-  // @ts-ignore
   public hp: number = 8;
-  // @ts-ignore
   public maxHP: number = 8;
   public feathers: number = 0;
   private scenery: Record<string, any[] | any> = {};

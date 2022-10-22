@@ -47,8 +47,9 @@ export class HUD extends Scene {
     this.gfxBtn.fillRect(20, window.innerHeight - 40 - 60 - 20, window.innerWidth - 40, 60);
     this.gfxBtn.strokeRect(20, window.innerHeight - 40 - 60 - 20, window.innerWidth - 40, 60);
     this.gfxBtn.setAlpha(0);
+    this.gfxBtn.setY(-25);
 
-    this.txtBtn = this.add.text(window.innerWidth / 2, window.innerHeight - 40 - 52, '', {
+    this.txtBtn = this.add.text(window.innerWidth / 2, window.innerHeight - 40 - 52 - 25, '', {
       fontSize: '22px',
       color: '#FFF',
       fontFamily: 'Silkscreen',
@@ -92,9 +93,17 @@ export class HUD extends Scene {
       this.btnCallback = callback;
   
       this.tweens.add({
-        targets: [this.txtBtn, this.gfxBtn],
+        targets: this.txtBtn,
         alpha: 1,
-        duration: 750
+        y: window.innerHeight - 40 - 52,
+        duration: 500
+      });
+
+      this.tweens.add({
+        targets: this.gfxBtn,
+        alpha: 1,
+        y: 0,
+        duration: 500
       });
     }
   }
@@ -104,11 +113,14 @@ export class HUD extends Scene {
       this.tweens.add({
         targets: [this.txtBtn, this.gfxBtn],
         alpha: 0,
-        duration: 750,
-        onComplete: () => {
-          this.txtBtn.setText('');
-          this.btnCallback = undefined;
-        }
+        duration: 500
+      });
+
+      this.time.delayedCall(2000, () => {
+        this.txtBtn.setText('');
+        this.txtBtn.setY(window.innerHeight - 40 - 52 - 25);
+        this.gfxBtn.setY(-25);
+        this.btnCallback = undefined;
       });
     }
   }
