@@ -1,11 +1,11 @@
 import { GameObjects } from "phaser";
-import { GameScene } from "../scenes/GameScene";
+import { RootLevel } from "../levels/RootLevel";
 const {Sprite} = GameObjects;
 
 export class Gate extends Sprite {
-  declare scene: GameScene;
+  declare scene: RootLevel;
 
-  constructor(scene: GameScene, x: number, y: number) {
+  constructor(scene: RootLevel, x: number, y: number) {
     super(scene, x, y, 'gate');
 
     this.scene = scene;

@@ -1,6 +1,6 @@
 import { GameObjects, Physics, Math as pMath } from "phaser";
 import { createStateMachine } from "../createStateMachine";
-import { type GameScene } from "../scenes/GameScene";
+import { RootLevel } from "../levels/RootLevel";
 import { Feather } from "./Feather";
 const {Sprite} = GameObjects;
 
@@ -104,7 +104,7 @@ const machine = createStateMachine<Birb>(
 export class Birb extends Sprite {
   private stateMachine = machine();
   declare body: Physics.Arcade.Body;
-  declare scene: GameScene;
+  declare scene: RootLevel;
   groundCollider: Physics.Arcade.Collider;
   maxHP: number = 1;
   hp: number = this.maxHP;
@@ -115,7 +115,7 @@ export class Birb extends Sprite {
   range: number = 8;
   cooldown: boolean = false;
 
-  constructor(scene: GameScene, x: number, y: number) {
+  constructor(scene: RootLevel, x: number, y: number) {
     super(scene, x, y, 'birb');
 
     this.scene.add.existing(this);

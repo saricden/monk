@@ -1,6 +1,6 @@
 import { GameObjects, Physics, Math as pMath, type Time } from "phaser";
 import { createStateMachine } from "../createStateMachine";
-import { type GameScene } from "../scenes/GameScene";
+import { RootLevel } from "../levels/RootLevel";
 import { Feather } from "./Feather";
 const {Sprite} = GameObjects;
 
@@ -105,10 +105,10 @@ export class MushroomRedSm extends Sprite {
   maxHP: number = 1;
   hp: number = this.maxHP;
   speed: number = 20;
-  declare scene: GameScene;
+  declare scene: RootLevel;
   groundCollider: Physics.Arcade.Collider;
 
-  constructor(scene: GameScene, x: number, y: number) {
+  constructor(scene: RootLevel, x: number, y: number) {
     super(scene, x, y, 'mushroom-sm-red');
 
     this.scene = scene;

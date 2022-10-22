@@ -1,9 +1,10 @@
 import { Scene, Tilemaps, Math as pMath, BlendModes, Display } from 'phaser';
+import { HUD } from '../scenes/HUD';
 import { Birb } from '../sprites/Birb';
 import { Gate } from '../sprites/Gate';
 import { MushroomRedSm } from '../sprites/MushroomRedSm';
 
-export class GameScene extends Scene {
+export class RootLevel extends Scene {
   public map?: Tilemaps.Tilemap;
   public ground?: any;
   public monk?: any;
@@ -17,17 +18,40 @@ export class GameScene extends Scene {
   public enemies: Record<string, any[] | any> = {};
   private ost!: any;
   public audioRate: number = 1;
+  private gates: Gate[] = [];
+  private hud!: any;
 
-  constructor() {
-    super('scene-game');
+  private mapKey: string;
+  private tilesetName: string;
+  private tilesetKey: string;
+  private musicKey: string;
+
+  constructor(
+    levelKey: string,
+    {
+      mapKey,
+      tilesetName,
+      tilesetKey,
+      musicKey
+    }:
+    {
+      mapKey: string,
+      tilesetName: string,
+      tilesetKey: string,
+      musicKey: string
+    }
+    ) {
+    super(`scene-${levelKey}`);
+
+    this.mapKey = mapKey;
+    this.tilesetName = tilesetName;
+    this.tilesetKey = tilesetKey;
+    this.musicKey = musicKey;
   }
 
   create() {
-    this.map = this.add.tilemap('map-temple');
-    const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
-
-    // this.map = this.add.tilemap('map-cloud-hills');
-    // const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
+    this.map = this.add.tilemap(this.mapKey);
+    const tiles = this.map.addTilesetImage(this.tilesetName, this.tilesetKey, 32, 32, 1, 2);
 
     this.ground = this.map.createLayer('ground', tiles);
 
@@ -64,19 +88,12 @@ export class GameScene extends Scene {
     this.physics.world.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 8);
     this.monk.body.setCollideWorldBounds(true);
 
-    // @ts-ignore
-    // this.physics.add.overlap(this.monk, this.baddies, (kirk, enemy) => {
-    //   this.handleEnemyOverlap(enemy);
-    // });
-
-    // this.cameras.main.setZoom(0.2);
     this.cameras.main.setZoom(2);
-    // this.cameras.main.setZoom(1);
     this.cameras.main.startFollow(this.monk);
     this.cameras.main.setBounds(0, -this.map.heightInPixels * 4, this.map.widthInPixels, this.map.heightInPixels * 5);
     this.cameras.main.setBackgroundColor(0x3366EE);
 
-    this.ost = this.sound.add('ost1', {
+    this.ost = this.sound.add(this.musicKey, {
       loop: true,
       volume: 0.23
     });
@@ -192,6 +209,7 @@ export class GameScene extends Scene {
     this.scene.launch('scene-hud', {
       parentScene: this
     });
+    this.hud = this.scene.get('scene-hud');
 
     // Randomly add clouds
     this.scenery.clouds = [];
@@ -345,21 +363,16 @@ export class GameScene extends Scene {
         );
       }
       else if (obj.name === 'gate') {
+        const to = obj.properties.find((prop: any) => prop.name === 'to').value;
         const gate = new Gate(
           this,
           obj.x as number,
           obj.y as number
         );
 
-        gate.setDepth(-1);
+        gate.setData('to', to);
 
-        // const mask = this.add.sprite(obj.x as number + 2, obj.y as number + 3, 'gate-mask');
-        // mask.setOrigin(0.5, 1);
-        // mask.setDepth(-1);
-        // mask.play({
-        //   key: 'gate-mask-flicker',
-        //   repeat: -1
-        // });
+        gate.setDepth(-1);
 
         const rect = this.add.graphics();
         rect.fillStyle(0xFFFFFF);
@@ -375,13 +388,13 @@ export class GameScene extends Scene {
 
         const mask = rect.createGeometryMask();
 
-
-        const level = this.add.image(obj.x as number, obj.y as number + 3, 'map-preview-cloud-hills');
-        // level.setScale(0.1);
+        const level = this.add.image(obj.x as number, obj.y as number + 3, `map-preview-${to}`);
         level.setScrollFactor(0.85, 1);
         level.setOrigin(0.7, 1);
         level.setMask(mask);
         level.setDepth(-1);
+
+        this.gates.push(gate);
       }
     });
   }
@@ -477,29 +490,6 @@ export class GameScene extends Scene {
       }
     }
 
-    // Queue enemy spawns
-    // const doQueueEnemy = (this.gameStarted && this.queuedEnemyCount < this.maxQueuedEnemies);
-    
-    // if (doQueueEnemy) {
-    //   const delay = pMath.Between(1500, 10000);
-
-    //   // this.time.delayedCall(delay, () => {
-    //   //   this.spawnBadGuy();
-    //   // });
-
-    //   this.queuedEnemyCount++;
-    // }
-
-    // Handle baddy logic
-    this.baddies.forEach((baddy: any) => {
-      // Handle dumb enemy movement
-      if (!baddy.getData('isDead')) {
-        this.physics.moveTo(baddy, this.monk.x, this.monk.y, 50);
-      }
-
-      // Cleanup dead baddies
-    });
-
     // Day / night cycle
     this.cycleDayNight();
 
@@ -517,6 +507,28 @@ export class GameScene extends Scene {
       this.feathers = 0;
       this.scene.stop('scene-hud');
       this.scene.restart();
+    }
+
+    // Gate proximity
+    let nearbyGateTo = '';
+
+    this.gates.forEach((gate) => {
+      const d2p = pMath.Distance.Between(gate.x, gate.y, this.monk.x, this.monk.y);
+
+      if (d2p < 50) {
+        nearbyGateTo = gate.getData('to');
+      }
+    });
+
+    if (nearbyGateTo === '') {
+      this.hud.hideBtn();
+    }
+    else {
+      this.hud.showBtn(`Go to ${nearbyGateTo}`, () => {
+        this.ost.destroy();
+        this.scene.stop('scene-hud');
+        this.scene.start(`scene-${nearbyGateTo}`);
+      });
     }
   }
 
@@ -618,85 +630,4 @@ export class GameScene extends Scene {
       rate: this.audioRate
     });
   }
-
-  // spawnBadGuy() {
-  //   if (this.map === undefined) {
-  //     return;
-  //   }
-
-  //   const x = pMath.Between(0, this.map.widthInPixels);
-  //   const y = -100;
-
-  //   const badGuy = this.physics.add.sprite(x, y, 'bad-guy');
-  //   const collider = this.physics.add.collider(badGuy, this.ground);
-    
-  //   badGuy.setData('physicsCollider', collider);
-  //   badGuy.setData('isDead', false);
-  //   badGuy.body.setAllowGravity(false);
-  //   badGuy.play({
-  //     key: 'bad-guy-anim',
-  //     repeat: -1
-  //   });
-
-  //   this.baddies.push(badGuy);
-  //   this.queuedEnemyCount--;
-  // }
-
-  // handleEnemyOverlap(enemy: any) {
-  //   const enemyIsDead = enemy.getData('isDead');
-
-  //   if (!enemyIsDead) {
-  //     const kirkIsUnder = (this.monk.y > (enemy.y - (enemy.displayHeight * 0.75)));
-  
-  //     if (kirkIsUnder) {
-  //       const si = pMath.Between(1, 3);
-  //       this.sound.play(`sfx-hurt${si}`);
-
-  //       this.cameras.main.shake(500, 0.01);
-  //       this.cameras.main.flash(300, 255, 0, 0);
-
-  //       // Damage Kirk
-  //       if (this.monk.body.velocity.x === 0) {
-  //         const dir = (pMath.Between(0, 1) === 1 ? -1 : 1);
-  //         const vel = pMath.Between(450, 500);
-  
-  //         this.monk.body.setVelocityX(-dir * vel);
-  //       }
-  //       else {
-  //         const vel = this.monk.body.velocity.x;
-  
-  //         this.monk.body.setVelocityX(-vel);
-  //       }
-  
-  //       if (this.monk.body.velocity.y === 0) {
-  //         const vel = pMath.Between(450, 500);
-  
-  //         this.monk.body.setVelocityY(-vel);
-  //       }
-  //       else {
-  //         const vel = this.monk.body.velocity.y;
-          
-  //         this.monk.body.setVelocityY(-vel);
-  //       }
-  //     }
-  //     else {
-  //       this.monk.body.setVelocityY(-225);
-  //     }
-  
-  //     // Kill enemy
-  //     const si = pMath.Between(1, 3);
-  //     this.sound.play(`sfx-enemy${si}`);
-
-  //     const collider = enemy.getData('physicsCollider');
-  
-  //     this.physics.world.removeCollider(collider);
-
-  //     enemy.setData('isDead', true);
-  //     enemy.body.setAllowGravity(true);
-  //     enemy.body.setVelocity(0, -175);
-
-  //     // Increase score
-  //     this.score++;
-  //   }
-  // }
 }

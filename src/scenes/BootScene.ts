@@ -103,7 +103,7 @@ export class BootScene extends Scene {
     // this.sound.setVolume(0);
 
     this.input.once('pointerup', () => {
-      this.scene.start('scene-game');
+      this.scene.start('scene-temple');
     });
 
   }

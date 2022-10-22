@@ -3,8 +3,11 @@ import { Game, WEBGL } from 'phaser';
 
 // Scenes
 import { BootScene } from './scenes/BootScene';
-import { GameScene } from './scenes/GameScene';
 import { HUD } from './scenes/HUD';
+
+// Maps
+import { TempleLevel } from './levels/TempleLevel';
+import { CloudHillsLevel } from './levels/CloudHillsLevel';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 
@@ -23,7 +26,8 @@ const config = {
   pixelArt: true,
   scene: [
     BootScene,
-    GameScene,
+    TempleLevel,
+    CloudHillsLevel,
 
     HUD
   ]
