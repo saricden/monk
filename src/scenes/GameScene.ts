@@ -23,11 +23,11 @@ export class GameScene extends Scene {
   }
 
   create() {
-    // this.map = this.add.tilemap('map-temple');
-    // const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
+    this.map = this.add.tilemap('map-temple');
+    const tiles = this.map.addTilesetImage('tiles', 'tiles', 32, 32, 1, 2);
 
-    this.map = this.add.tilemap('map-cloud-hills');
-    const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
+    // this.map = this.add.tilemap('map-cloud-hills');
+    // const tiles = this.map.addTilesetImage('grassland', 'tileset-grassland', 32, 32, 1, 2);
 
     this.ground = this.map.createLayer('ground', tiles);
 
@@ -46,6 +46,14 @@ export class GameScene extends Scene {
 
     this.ground.setDepth(-1);
     this.monk.setDepth(0);
+
+    if (this.map.getObjectLayer('spawn')) {
+      this.map.getObjectLayer('spawn').objects.forEach((object) => {
+        if (object.name === 'player') {
+          this.monk.setPosition(object.x, object.y);
+        }
+      });
+    }
 
     this.baddies = [];
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="100" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="113">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="100" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="115">
  <editorsettings>
   <export target="../../public/assets/maps/temple.json" format="json"/>
  </editorsettings>
@@ -800,6 +800,11 @@
  </objectgroup>
  <objectgroup id="2" name="enemies">
   <object id="12" name="birb" x="2899.89" y="1258.38">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="spawn">
+  <object id="114" name="player" x="224" y="224">
    <point/>
   </object>
  </objectgroup>
