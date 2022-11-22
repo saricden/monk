@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Relic Reclaimation</string>
+    <string name="title_activity_main">Relic Reclaimation</string>
+    <string name="package_name">com.saricden.relicReclaimation</string>
+    <string name="custom_url_scheme">com.saricden.relicReclaimation</string>
+</resources>
